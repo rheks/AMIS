@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/DLayout/DLayout.cshtml";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List of Guests</h6>
+        </div>
+        <br />
+        <div class="col-6">
+            <button type="button" class="btn btn-success" id="ModalCreate" data-toggle="modal" data-target="#CreateModal">
+                Create New Employee
+            </button>
+        </div>
+        <!-- Button trigger modal -->
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="GuestsTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No.</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Date Of Birth</th>
+                            <th>Gender</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<!-- Modal Create -->
+<div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CreateModalLabel">Create New Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="BodyModal">
+                <form method="post">
+                    <input type="number" class="form-control" name="nik" id="InputNIK" hidden>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputFirstName">First Name</label>
+                            <input type="text" class="form-control" name="firstname" id="InputFirstName" pattern="[a-zA-Z]+" minlength="1">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputLastName">Last Name</label>
+                            <input type="text" class="form-control" name="lastname" id="InputLastName" pattern="[a-zA-Z]+" minlength="1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputBOD">Birth of Date</label>
+                            <input type="date" class="form-control" name="bod" id="InputBOD" >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputGender">Gender</label>
+                            <select class="form-control" name="gender" id="InputGender" >
+                                <option value="" selected disabled>Select The Gender</option>
+                                <option value="0">Male</option>
+                                <option value="1">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputAddress">Address</label>
+                        <textarea class="form-control" name="address" id="InputAddress"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputEmail">Email</label>
+                            <input type="text" class="form-control" name="email" id="InputEmail" >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputPhone">Phone</label>
+                            <input type="text" class="form-control" name="phone" id="InputPhone" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="buttonSubmit" onclick="Create()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/AdminScript.js"></script>
+}
+
+
+
