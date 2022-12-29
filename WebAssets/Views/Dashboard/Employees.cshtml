@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Employees";
     Layout = "~/Views/DLayout/DLayout.cshtml";
 }
 
@@ -10,7 +10,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">List of Guests</h6>
+            <h6 class="m-0 font-weight-bold text-primary">List of Employees</h6>
         </div>
         <br />
         <div class="col-6">
@@ -22,7 +22,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="GuestsTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="EmployeesTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th class="text-center">No.</th>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="InputBOD">Birth of Date</label>
+                            <label for="InputBOD">Date of Birth</label>
                             <input type="date" class="form-control" name="bod" id="InputBOD" >
                         </div>
                         <div class="form-group col-md-6">
@@ -95,6 +95,22 @@
                             <input type="text" class="form-control" name="phone" id="InputPhone" >
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="InputPassword">Password</label>
+                        <input type="password" class="form-control" name="password" id="InputPassword" >
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputRole">Role</label>
+                            <select class="form-control" id="InputRole" name="role">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputDepartement">Departement</label>
+                            <select class="form-control" id="InputDepartement" name="departement">
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -108,8 +124,5 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/js/AdminScript.js"></script>
+    <script src="~/js/EmployeesScript.js"></script>
 }
-
-
-

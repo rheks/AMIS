@@ -2,11 +2,9 @@
 let localDay;
 
 $(document).ready(function () {
-    $('#accordionSidebar > li:nth-child(3)').addClass("active")
-    $('#collapseUtilities').addClass("show")
-    $('#collapseUtilities > div > a:nth-child(1)').addClass("active")
+    $('#accordionSidebar > li:nth-child(4)').addClass("active")
 
-    $('#GuestsTable').DataTable({
+    $('#EmployeesTable').DataTable({
         "ajax": {
             "url": urlBackend + "/employees",
             "type": "GET",
@@ -50,7 +48,7 @@ $(document).ready(function () {
                     <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
                         <i class="fa fa-trash">
                     </i></button >`
-                }, "width": "15%"
+                }, "width": "10%"
             }
         ],
         "language": {
@@ -58,12 +56,49 @@ $(document).ready(function () {
         },
         "width": "100%"
     });
+
+    $.ajax({
+        "url": urlBackend + "/roles",
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": "data",
+        "contentType": "application/json;charset=utf-8",
+        "success": (result) => {
+            var obj = result.data
+            $("#InputRole").append(`<option value="" selected disabled>Choose The Role</option>`)
+            for (let i = 0; i < obj.length; i++) {
+                $("#InputRole").append(`<option value="${obj[i].id}">${obj[i].name}</option>`)
+            }
+        },
+        "error": (e) => {
+            alert(e.responseText)
+        }
+    })
+
+    $.ajax({
+        "url": urlBackend + "/departements",
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": "data",
+        "contentType": "application/json;charset=utf-8",
+        "success": (result) => {
+            var obj = result.data
+            $("#InputDepartement").append(`<option value="" selected disabled>Choose The Departement</option>`)
+            for (let i = 0; i < obj.length; i++) {
+                $("#InputDepartement").append(`<option value="${obj[i].id}">${obj[i].name}</option>`)
+            }
+        },
+        "error": (e) => {
+            alert(e.responseText)
+        }
+    })
 });
 
 $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
+    $("#BodyModal > form > div:nth-child(6)").show()
 
     $("#InputNIK").val("");
     $("#InputFirstName").val("");
@@ -73,27 +108,33 @@ $("#ModalCreate").click(() => {
     $("#InputAddress").val("");
     $("#InputPhone").val("");
     $("#InputEmail").val("");
+    $("#InputPassword").val("");
+    $("#InputRole").val("");
+    $("#InputDepartement").val("");
 
     $("#InputFirstName").attr("placeholder", "Input First Name");
     $("#InputLastName").attr("placeholder", "Input Last Name");
     $("#InputAddress").attr("placeholder", "Input Address");
     $("#InputPhone").attr("placeholder", "Input Phone Number");
     $("#InputEmail").attr("placeholder", "Input Email");
+    $("#InputPassword").attr("placeholder", "Input Password");
 })
 
 function Create() {
     let validateForm = true;
 
     if (
-        $("#InputName").val() == "" ||
+        $("#InputFirstName").val() == "" ||
+        $("#InputLastName").val() == "" ||
+        $("#InputBOD").val() == "" ||
         $("#InputPhone").val() == "" ||
-        $("#InputEmail").val() == "" ||
+        $("#InputGender").val() == "" ||
         $("#InputAddress").val() == "" ||
-        $("#InputProvince option:selected").html() == "" ||
-        $("#InputCityOrDistrict option:selected").html() == "" ||
-        $("#InputSubDisctrict option:selected").html() == "" ||
-        $("#InputWard option:selected").html() == "" ||
-        $("#InputPostalCode").val() == ""
+        $("#InputEmail").val() == "" ||
+        $("#InputPhone").val() == "" ||
+        $("#InputRole").val() == "" ||
+        $("#InputDepartement").val() == "" ||
+        $("#InputPassword").val() == ""
     ) {
         Swal.fire({
             icon: 'error',
@@ -114,30 +155,31 @@ function Create() {
             Swal.fire({
                 icon: 'error',
                 title: 'Failed',
-                text: "Sorry, your phone number is not valid",
+                text: "Sorry, your phone number is invalid",
             })
             validateForm = false
         }
     }
 
     if (validateForm) {
-        var Guest = {};
-        Guest.Name = $("#InputName").val();
-        Guest.Phone = $("#InputPhone").val();
-        Guest.Email = $("#InputEmail").val();
-        Guest.Address = $("#InputAddress").val();
-        Guest.Province = $("#InputProvince option:selected").html();
-        Guest.CityOrDistrict = $("#InputCityOrDistrict option:selected").html();
-        Guest.SubDistrict = $("#InputSubDisctrict option:selected").html();
-        Guest.Ward = $("#InputWard option:selected").html();
-        Guest.PostalCode = $("#InputPostalCode").val();
+        var Employee = {};
+        Employee.FirstName = $("#InputFirstName").val();
+        Employee.LastName = $("#InputLastName").val();
+        Employee.BirthOfDate = $("#InputBOD").val();
+        Employee.Gender = parseInt($("#InputGender").val());
+        Employee.Address = $("#InputAddress").val();
+        Employee.Email = $("#InputEmail").val();
+        Employee.Phone = $("#InputPhone").val();
+        Employee.Password = $("#InputPassword").val();
+        Employee.Role_Id = parseInt($("#InputRole").val());
+        Employee.Departement_Id = parseInt($("#InputDepartement").val());
 
-        console.log(Guest)
+        console.log(Employee)
 
         $.ajax({
             "type": "POST",
-            "url": urlBackend,
-            "data": JSON.stringify(Guest),
+            "url": urlBackend + "/employees/register",
+            "data": JSON.stringify(Employee),
             "contentType": "application/json;charset=utf-8",
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
@@ -146,12 +188,12 @@ function Create() {
                         title: 'Success',
                         text: 'Data successfully created',
                     })
-                    $('#GuestsTable').DataTable().ajax.reload();
+                    $('#EmployeesTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 } else {
                     alert("Data failed to create")
                 }
-                $('#GuestsTable').DataTable().ajax.reload();
+                $('#EmployeesTable').DataTable().ajax.reload();
                 $('#CreateModal').modal("hide");
             },
             "error": (result) => {
@@ -171,7 +213,7 @@ function GetById(id) {
     // debugger;
     $.ajax({
         "type": "GET",
-        "url": urlBackend + "/" + id,
+        "url": urlBackend + "/employees/" + id,
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "success": function (result) {
@@ -179,36 +221,19 @@ function GetById(id) {
 
             console.log(obj)
 
-            //$.ajax({
-            //    "url": "https://dev.farizdotid.com/api/daerahindonesia/provinsi",
-            //    "type": "GET",
-            //    "datatype": "json",
-            //    "contentType": "application/json;charset=utf-8",
-            //    "success": (result) => {
-            //        var obj = result.provinsi
-            //        $("#InputProvince").append(`<option value="" selected disabled>Select Province</option>`)
-            //        for (let i = 0; i < obj.length; i++) {
-            //            $("#InputProvince").append(`<option value="${obj[i].id}">${obj[i].nama}</option>`)
-            //        }
-            //    },
-            //    "error": (e) => {
-            //        alert(e.responseText)
-            //    }
-            //})
-
-
             // debugger;
-            $('#InputIdGuest').val(obj.id);
-            $('#InputName').val(obj.name);
+            $('#InputNIK').val(obj.nik);
+            $('#InputFirstName').val(obj.firstName);
+            $('#InputLastName').val(obj.lastName);
+            $('#InputBOD').val(obj.birthOfDate.slice(0, 10));
+            $('#InputGender').val(obj.gender);
+            $('#InputAddress').val(obj.address);
             $('#InputPhone').val(obj.phone);
             $('#InputEmail').val(obj.email);
-            $('#InputAddress').val(obj.address);
-            $('#InputProvince').val(obj.province);
-            $('#InputCityOrDistrict').val(obj.cityOrDistrict);
-            $('#InputSubDisctrict').val(obj.subDistrict);
-            $('#InputWard').val(obj.ward);
-            $('#InputPostalCode').val(obj.postalCode);
+            $('#InputRole').val(obj.role_Id);
+            $('#InputDepartement').val(obj.departement_Id);
 
+            $("#BodyModal > form > div:nth-child(6)").hide()
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");
@@ -224,16 +249,17 @@ function Update() {
     let validateForm = true;
 
     if (
-        $("#InputIdGuest").val() == "" ||
-        $("#InputName").val() == "" ||
+        $("#InputNIK").val() == "" ||
+        $("#InputFirstName").val() == "" ||
+        $("#InputLastName").val() == "" ||
+        $("#InputBOD").val() == "" ||
         $("#InputPhone").val() == "" ||
-        $("#InputEmail").val() == "" ||
+        $("#InputGender").val() == "" ||
         $("#InputAddress").val() == "" ||
-        $("#InputProvince option:selected").html() == "" ||
-        $("#InputCityOrDistrict option:selected").html() == "" ||
-        $("#InputSubDisctrict option:selected").html() == "" ||
-        $("#InputWard option:selected").html() == "" ||
-        $("#InputPostalCode").val() == ""
+        $("#InputEmail").val() == "" ||
+        $("#InputPhone").val() == "" ||
+        $("#InputRole").val() == "" ||
+        $("#InputDepartement").val() == ""
     ) {
         Swal.fire({
             icon: 'error',
@@ -261,24 +287,25 @@ function Update() {
     }
 
     if (validateForm) {
-        var Guest = {};
-        Guest.Id = parseInt($("#InputIdGuest").val());
-        Guest.Name = $("#InputName").val();
-        Guest.Phone = $("#InputPhone").val();
-        Guest.Email = $("#InputEmail").val();
-        Guest.Address = $("#InputAddress").val();
-        Guest.Province = $("#InputProvince option:selected").html();
-        Guest.CityOrDistrict = $("#InputCityOrDistrict option:selected").html();
-        Guest.SubDistrict = $("#InputSubDisctrict option:selected").html();
-        Guest.Ward = $("#InputWard option:selected").html();
-        Guest.PostalCode = $("#InputPostalCode").val();
+        var Employee = {};
+        Employee.NIK = $("#InputNIK").val();
+        Employee.FirstName = $("#InputFirstName").val();
+        Employee.LastName = $("#InputLastName").val();
+        Employee.BirthOfDate = $("#InputBOD").val();
+        Employee.Gender = parseInt($("#InputGender").val());
+        Employee.Address = $("#InputAddress").val();
+        Employee.Email = $("#InputEmail").val();
+        Employee.Phone = $("#InputPhone").val();
+        Employee.Password = $("#InputPassword").val();
+        Employee.Role_Id = parseInt($("#InputRole").val());
+        Employee.Departement_Id = parseInt($("#InputDepartement").val());
     
-        console.log(Guest)
+        console.log(Employee)
     
         $.ajax({
-            "url": urlBackend,
+            "url": urlBackend + "/employees",
             "type": "PUT",
-            "data": JSON.stringify(Guest),
+            "data": JSON.stringify(Employee),
             "contentType": "application/json; charset=utf-8",
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
@@ -287,7 +314,7 @@ function Update() {
                         title: 'Success',
                         text: 'Data successfully updated',
                     })
-                    $('#GuestsTable').DataTable().ajax.reload();
+                    $('#EmployeesTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 }
                 else {
@@ -313,7 +340,7 @@ function Update() {
 
 function ConfirmDelete(id) {
     $.ajax({
-        "url": urlBackend + "/" + id,
+        "url": urlBackend + "/employees/" + id,
         "type": "GET",
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
@@ -322,12 +349,12 @@ function ConfirmDelete(id) {
             Swal.fire({
                 title: 'Delete data',
                 icon: 'info',
-                html: `Are you sure want to delete data with name <b>${obj.name}</b>?`,
+                html: `Are you sure want to delete data with name <b>${obj.firstName} ${obj.lastName}</b>?`,
                 showCloseButton: true,
                 showConfirmButton: false,
                 showDenyButton: true,
                 showCancelButton: true,
-                denyButtonText: `<span onclick="Delete('${obj.id}')">Delete</span>`,
+                denyButtonText: `<span onclick="Delete('${obj.nik}')">Delete</span>`,
                 cancelButtonText: `Close`,
             })
         },
@@ -339,7 +366,7 @@ function ConfirmDelete(id) {
 
 function Delete(id) {
     $.ajax({
-        "url": urlBackend + "/" + id,
+        "url": urlBackend + "/employees/" + id,
         "type": "DELETE",
         "dataType": "json",
         "success": (result) => {
@@ -349,7 +376,7 @@ function Delete(id) {
                     title: 'Success',
                     text: 'Data successfully deleted',
                 })
-                $('#GuestsTable').DataTable().ajax.reload();
+                $('#EmployeesTable').DataTable().ajax.reload();
             }
         },
         "error": (result) => {

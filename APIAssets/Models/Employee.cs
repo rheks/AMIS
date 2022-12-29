@@ -23,13 +23,13 @@ namespace APIAssets.Models
         [ForeignKey("Role")]
         public int Role_Id { get; set; }
         
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Role Role { get; set; }
 
         [ForeignKey("Departements")]
         public int Departement_Id { get; set; }
         
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Departement Departements { get; set; }
         
         [JsonIgnore]

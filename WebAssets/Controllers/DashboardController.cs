@@ -2,9 +2,14 @@
 
 namespace WebAssets.Controllers
 {
-    public class AdminController : Controller
+    public class DashboardController : Controller
     {
         public IActionResult Index()
+        {
+            return View();
+        }
+        
+        public IActionResult Employees()
         {
             return View();
         }
