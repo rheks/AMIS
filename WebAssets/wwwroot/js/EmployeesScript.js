@@ -21,19 +21,16 @@ $(document).ready(function () {
             },
             { "data": "firstName" },
             { "data": "lastName" },
-            {
-                "data": "birthOfDate",
-                "render": function (data) {
-                    return `${data.slice(0, 10)}`
-                }, "width": "15%"
-            },
-            {
-                "data": "gender",
-                "render": function (data) {
-                    if (data == 0) { return "Male" }
-                    if (data == 1) { return "Female" }
-                }
-            },
+            { "data": "role.name" },
+            //{ "data": "birthOfDate" },
+            { "data": "departements.name" },
+            //{
+            //    "data": "gender",
+            //    "render": function (data) {
+            //        if (data == 0) { return "Male" }
+            //        if (data == 1) { return "Female" }
+            //    }
+            //},
             { "data": "address" },
             { "data": "phone" },
             { "data": "email" },
@@ -48,7 +45,7 @@ $(document).ready(function () {
                     <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
                         <i class="fa fa-trash">
                     </i></button >`
-                }, "width": "10%"
+                }, "width": "15%"
             }
         ],
         "language": {

@@ -13,5 +13,10 @@ namespace WebAssets.Controllers
         {
             return View();
         }
+        
+        public IActionResult Departements()
+        {
+            return View();
+        }
     }
 }
