@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewData["Title"] = "BorrowAssets";
+    Layout = "~/Views/DLayout/DLayout.cshtml";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List of Borrow Assets</h6>
+        </div>
+        <br />
+        <div class="col-6">
+            <button type="button" class="btn btn-success" id="ModalCreate" data-toggle="modal" data-target="#CreateModal">
+                Create New Borrow Asset
+            </button>
+        </div>
+        <!-- Button trigger modal -->
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="BorrowAssetsTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No.</th>
+                            <th>Name of Employee</th>
+                            <th>Name of Borrow Asset</th>
+                            <th>Quantity</th>
+                            <th>Borrow Time</th>
+                            <th>Return Time</th>
+                            <th>Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<!-- Modal Create -->
+<div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CreateModalLabel">Create New Borrow Asset</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="BodyModal">
+                <form method="post">
+                    <input type="number" class="form-control" name="IdBorrowAssets" id="InputIdBorrowAsset" hidden>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputEmployee">Employee</label>
+                            <select class="form-control" id="InputEmployee" name="employee">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputAsset">Asset</label>
+                            <select class="form-control" id="InputAsset" name="asset">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputQuantity">Quantity</label>
+                        <input type="number" class="form-control" name="quantity" id="InputQuantity" >
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputBorrowDate">Date of Borrow Asset</label>
+                            <input type="date" class="form-control" name="BorrowDate" id="InputBorrowDate" >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputReturnDate">Date of Return Asset</label>
+                            <input type="date" class="form-control" name="ReturnDate" id="InputReturnDate" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="buttonSubmit" onclick="Create()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/BorrowAssetsScript.js"></script>
+}

@@ -39,8 +39,10 @@ namespace APIAssets.Migrations
 
             modelBuilder.Entity("APIAssets.Models.BorrowAsset", b =>
                 {
-                    b.Property<string>("NIK")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Asset_Id")
                         .HasColumnType("int");
@@ -48,15 +50,23 @@ namespace APIAssets.Migrations
                     b.Property<DateTime>("Borrowing_Time")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("NIK")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Return_Time")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("NIK");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Asset_Id");
+
+                    b.HasIndex("NIK");
 
                     b.ToTable("Borrow_Assets");
                 });
@@ -162,9 +172,7 @@ namespace APIAssets.Migrations
 
                     b.HasOne("APIAssets.Models.User", "Users")
                         .WithMany("BorrowAssets")
-                        .HasForeignKey("NIK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NIK");
 
                     b.Navigation("Assets");
 

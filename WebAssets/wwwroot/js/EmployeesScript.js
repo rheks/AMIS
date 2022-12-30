@@ -31,7 +31,6 @@ $(document).ready(function () {
             //        if (data == 1) { return "Female" }
             //    }
             //},
-            { "data": "address" },
             { "data": "phone" },
             { "data": "email" },
             {

@@ -7,7 +7,7 @@ namespace APIAssets.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BorrowAssetsController : BaseController<BorrowAsset, BorrowAssetsRepository, string>
+    public class BorrowAssetsController : BaseController<BorrowAsset, BorrowAssetsRepository, int>
     {
         public BorrowAssetsController(BorrowAssetsRepository borrowAssetsRepository) : base(borrowAssetsRepository)
         {

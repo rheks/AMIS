@@ -38,15 +38,18 @@ namespace APIAssets.Migrations
                 name: "Borrow_Assets",
                 columns: table => new
                 {
-                    NIK = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Asset_Id = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Borrowing_Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Return_Time = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Borrow_Assets", x => x.NIK);
+                    table.PrimaryKey("PK_Borrow_Assets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Borrow_Assets_Assets_Asset_Id",
                         column: x => x.Asset_Id,
@@ -125,6 +128,11 @@ namespace APIAssets.Migrations
                 column: "Asset_Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Borrow_Assets_NIK",
+                table: "Borrow_Assets",
+                column: "NIK");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Departements_NIK_HoD",
                 table: "Departements",
                 column: "NIK_HoD",
@@ -147,7 +155,7 @@ namespace APIAssets.Migrations
                 column: "NIK",
                 principalTable: "Users",
                 principalColumn: "NIK",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Employees_Departements_Departement_Id",

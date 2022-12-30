@@ -10,7 +10,7 @@ namespace APIAssets.Models
     {
         [Key]
         public string NIK { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Employee Employee { get; set; }
         public string Password { get; set; }
         [JsonIgnore]

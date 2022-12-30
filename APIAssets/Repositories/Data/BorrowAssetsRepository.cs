@@ -3,7 +3,7 @@ using APIAssets.Models;
 
 namespace APIAssets.Repositories.Data
 {
-    public class BorrowAssetsRepository : GeneralRepository<AppDbContext, BorrowAsset, string>
+    public class BorrowAssetsRepository : GeneralRepository<AppDbContext, BorrowAsset, int>
     {
         public BorrowAssetsRepository(AppDbContext appDbContext) : base(appDbContext)
         {

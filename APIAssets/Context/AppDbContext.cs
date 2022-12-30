@@ -36,8 +36,8 @@ namespace APIAssets.Context
                 .WithOne(u => u.Employee)
                 .HasForeignKey<User>(u => u.NIK);
 
-            modelBuilder.Entity<BorrowAsset>()
-                .HasKey(ba => new { ba.NIK });
+            //modelBuilder.Entity<BorrowAsset>()
+            //    .HasKey(ba => new { ba.NIK });
 
             modelBuilder.Entity<BorrowAsset>()
                 .HasOne(ba => ba.Users)
