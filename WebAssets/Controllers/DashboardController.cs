@@ -18,5 +18,10 @@ namespace WebAssets.Controllers
         {
             return View();
         }
+        
+        public IActionResult Assets()
+        {
+            return View();
+        }
     }
 }

@@ -2,7 +2,7 @@
 let localDay;
 
 $(document).ready(function () {
-    $('#accordionSidebar > li:nth-child(4)').addClass("active")
+    $('#tab-employees').addClass("active")
 
     $('#EmployeesTable').DataTable({
         "ajax": {

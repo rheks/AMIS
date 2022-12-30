@@ -2,11 +2,11 @@
 let localDay;
 
 $(document).ready(function () {
-    $('#tab-departements').addClass("active")
+    $('#tab-assets').addClass("active")
 
-    $('#DepartementsTable').DataTable({
+    $('#AssetsTable').DataTable({
         "ajax": {
-            "url": urlBackend + "/departements",
+            "url": urlBackend + "/assets",
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
@@ -20,15 +20,7 @@ $(document).ready(function () {
                 }, "width": "1%"
             },
             { "data": "name" },
-            {
-                "data": "employeeHoD",
-                "render": function (data) {
-                    if (data != null) {
-                        return `${data.firstName} ${data.lastName}`
-                    }
-                    return null
-                }
-            },
+            { "data": "stock" },
             {
                 "data": "id",
                 "className": "text-center",
@@ -48,24 +40,6 @@ $(document).ready(function () {
         },
         "width": "100%"
     });
-
-    $.ajax({
-        "url": urlBackend + "/employees",
-        "type": "GET",
-        "datatype": "json",
-        "dataSrc": "data",
-        "contentType": "application/json;charset=utf-8",
-        "success": (result) => {
-            var obj = result.data
-            $("#InputHOD").append(`<option value="" selected disabled>Choose the Head of Departement</option>`)
-            for (let i = 0; i < obj.length; i++) {
-                $("#InputHOD").append(`<option value="${obj[i].nik}">${obj[i].firstName} ${obj[i].lastName}</option>`)
-            }
-        },
-        "error": (e) => {
-            alert(e.responseText)
-        }
-    })
 });
 
 $("#ModalCreate").click(() => {
@@ -73,19 +47,20 @@ $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
 
-    $("#InputIdDepartement").val("");
-    $("#InputDepartementName").val("");
-    $("#InputHOD").val("");
+    $("#InputIdAsset").val("");
+    $("#InputAssetName").val("");
+    $("#InputStock").val("");
 
-    $("#InputDepartementName").attr("placeholder", "Input Departement Name");
+    $("#InputAssetName").attr("placeholder", "Input Name of Asset");
+    $("#InputStock").attr("placeholder", "Input Stock");
 })
 
 function Create() {
     let validateForm = true;
 
     if (
-        $("#InputDepartementName").val() == "" ||
-        $("#InputHOD").val() == ""
+        $("#InputAssetName").val() == "" ||
+        $("#InputStock").val() == ""
     ) {
         Swal.fire({
             icon: 'error',
@@ -96,16 +71,16 @@ function Create() {
     }
 
     if (validateForm) {
-        var Departement = {};
-        Departement.Name = $("#InputDepartementName").val();
-        Departement.niK_HoD = parseInt($("#InputHOD").val());
+        var Asset = {};
+        Asset.Name = $("#InputAssetName").val();
+        Asset.Stock = $("#InputStock").val();
 
-        console.log(Departement)
+        console.log(Asset)
 
         $.ajax({
             "type": "POST",
-            "url": urlBackend + "/departements",
-            "data": JSON.stringify(Departement),
+            "url": urlBackend + "/assets",
+            "data": JSON.stringify(Asset),
             "contentType": "application/json;charset=utf-8",
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
@@ -114,12 +89,12 @@ function Create() {
                         title: 'Success',
                         text: 'Data successfully created',
                     })
-                    $('#DepartementsTable').DataTable().ajax.reload();
+                    $('#AssetsTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 } else {
                     alert("Data failed to create")
                 }
-                $('#DepartementsTable').DataTable().ajax.reload();
+                $('#AssetsTable').DataTable().ajax.reload();
                 $('#CreateModal').modal("hide");
             },
             "error": (result) => {
@@ -139,7 +114,7 @@ function GetById(id) {
     // debugger;
     $.ajax({
         "type": "GET",
-        "url": urlBackend + "/departements/" + id,
+        "url": urlBackend + "/assets/" + id,
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "success": function (result) {
@@ -148,9 +123,9 @@ function GetById(id) {
             console.log(obj)
 
             // debugger;
-            $('#InputIdDepartement').val(obj.id);
-            $('#InputDepartementName').val(obj.name);
-            $('#InputHOD').val(obj.niK_HoD);
+            $('#InputIdAsset').val(obj.id);
+            $('#InputAssetName').val(obj.name);
+            $('#InputStock').val(obj.stock);
 
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
@@ -167,9 +142,9 @@ function Update() {
     let validateForm = true;
 
     if (
-        $("#InputIdDepartement").val() == "" ||
-        $("#InputDepartementName").val() == "" ||
-        $("#InputHOD").val() == ""
+        $("#InputIdAsset").val() == "" ||
+        $("#InputAssetName").val() == "" ||
+        $("#InputStock").val() == ""
     ) {
         Swal.fire({
             icon: 'error',
@@ -180,17 +155,17 @@ function Update() {
     }
 
     if (validateForm) {
-        var Departement = {};
-        Departement.Id = $("#InputIdDepartement").val();
-        Departement.Name = $("#InputDepartementName").val();
-        Departement.niK_HoD = parseInt($("#InputHOD").val());
+        var Asset = {};
+        Asset.Id = $("#InputIdAsset").val();
+        Asset.Name = $("#InputAssetName").val();
+        Asset.Stock = $("#InputStock").val();
     
-        console.log(Departement)
+        console.log(Asset)
     
         $.ajax({
-            "url": urlBackend + "/departements",
+            "url": urlBackend + "/assets",
             "type": "PUT",
-            "data": JSON.stringify(Departement),
+            "data": JSON.stringify(Asset),
             "contentType": "application/json; charset=utf-8",
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
@@ -199,7 +174,7 @@ function Update() {
                         title: 'Success',
                         text: 'Data successfully updated',
                     })
-                    $('#DepartementsTable').DataTable().ajax.reload();
+                    $('#AssetsTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 }
                 else {
@@ -225,7 +200,7 @@ function Update() {
 
 function ConfirmDelete(id) {
     $.ajax({
-        "url": urlBackend + "/departements/" + id,
+        "url": urlBackend + "/assets/" + id,
         "type": "GET",
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
@@ -234,7 +209,7 @@ function ConfirmDelete(id) {
             Swal.fire({
                 title: 'Delete data',
                 icon: 'info',
-                html: `Are you sure want to delete data with departement <b>${obj.name}</b>?`,
+                html: `Are you sure want to delete data with name <b>${obj.name}</b>?`,
                 showCloseButton: true,
                 showConfirmButton: false,
                 showDenyButton: true,
@@ -251,7 +226,7 @@ function ConfirmDelete(id) {
 
 function Delete(id) {
     $.ajax({
-        "url": urlBackend + "/Departements/" + id,
+        "url": urlBackend + "/assets/" + id,
         "type": "DELETE",
         "dataType": "json",
         "success": (result) => {
@@ -261,7 +236,7 @@ function Delete(id) {
                     title: 'Success',
                     text: 'Data successfully deleted',
                 })
-                $('#DepartementsTable').DataTable().ajax.reload();
+                $('#AssetsTable').DataTable().ajax.reload();
             }
         },
         "error": (result) => {
