@@ -2,11 +2,11 @@
 let localDay;
 
 $(document).ready(function () {
-    $('#tab-assets').addClass("active")
+    $('#tab-roles').addClass("active")
 
-    $('#AssetsTable').DataTable({
+    $('#RolesTable').DataTable({
         "ajax": {
-            "url": urlBackend + "/assets",
+            "url": urlBackend + "/roles",
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
@@ -20,7 +20,6 @@ $(document).ready(function () {
                 }, "width": "1%"
             },
             { "data": "name" },
-            { "data": "stock" },
             {
                 "data": "id",
                 "className": "text-center",
@@ -47,20 +46,17 @@ $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
 
-    $("#InputIdAsset").val("");
-    $("#InputAssetName").val("");
-    $("#InputStock").val("");
+    $("#InputIdRole").val("");
+    $("#InputRoleName").val("");
 
-    $("#InputAssetName").attr("placeholder", "Input Name of Asset");
-    $("#InputStock").attr("placeholder", "Input Stock");
+    $("#InputRoleName").attr("placeholder", "Input Name of Role");
 })
 
 function Create() {
     let validateForm = true;
 
     if (
-        $("#InputAssetName").val() == "" ||
-        $("#InputStock").val() == ""
+        $("#InputRoleName").val() == ""
     ) {
         Swal.fire({
             icon: 'error',
@@ -71,16 +67,15 @@ function Create() {
     }
 
     if (validateForm) {
-        var Asset = {};
-        Asset.Name = $("#InputAssetName").val();
-        Asset.Stock = $("#InputStock").val();
+        var Role = {};
+        Role.Name = $("#InputRoleName").val();
 
-        console.log(Asset)
+        console.log(Role)
 
         $.ajax({
             "type": "POST",
-            "url": urlBackend + "/assets",
-            "data": JSON.stringify(Asset),
+            "url": urlBackend + "/roles",
+            "data": JSON.stringify(Role),
             "contentType": "application/json;charset=utf-8",
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
@@ -89,12 +84,12 @@ function Create() {
                         title: 'Success',
                         text: 'Data successfully created',
                     })
-                    $('#AssetsTable').DataTable().ajax.reload();
+                    $('#RolesTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 } else {
                     alert("Data failed to create")
                 }
-                $('#AssetsTable').DataTable().ajax.reload();
+                $('#RolesTable').DataTable().ajax.reload();
                 $('#CreateModal').modal("hide");
             },
             "error": (result) => {
@@ -114,7 +109,7 @@ function GetById(id) {
     // debugger;
     $.ajax({
         "type": "GET",
-        "url": urlBackend + "/assets/" + id,
+        "url": urlBackend + "/roles/" + id,
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "success": function (result) {
@@ -123,9 +118,8 @@ function GetById(id) {
             console.log(obj)
 
             // debugger;
-            $('#InputIdAsset').val(obj.id);
-            $('#InputAssetName').val(obj.name);
-            $('#InputStock').val(obj.stock);
+            $('#InputIdRole').val(obj.id);
+            $('#InputRoleName').val(obj.name);
 
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
@@ -142,9 +136,8 @@ function Update() {
     let validateForm = true;
 
     if (
-        $("#InputIdAsset").val() == "" ||
-        $("#InputAssetName").val() == "" ||
-        $("#InputStock").val() == ""
+        $("#InputIdRole").val() == "" ||
+        $("#InputRoleName").val() == ""
     ) {
         Swal.fire({
             icon: 'error',
@@ -155,17 +148,16 @@ function Update() {
     }
 
     if (validateForm) {
-        var Asset = {};
-        Asset.Id = $("#InputIdAsset").val();
-        Asset.Name = $("#InputAssetName").val();
-        Asset.Stock = $("#InputStock").val();
+        var Role = {};
+        Role.Id = $("#InputIdRole").val();
+        Role.Name = $("#InputRoleName").val();
     
-        console.log(Asset)
+        console.log(Role)
     
         $.ajax({
-            "url": urlBackend + "/assets",
+            "url": urlBackend + "/roles",
             "type": "PUT",
-            "data": JSON.stringify(Asset),
+            "data": JSON.stringify(Role),
             "contentType": "application/json; charset=utf-8",
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
@@ -174,7 +166,7 @@ function Update() {
                         title: 'Success',
                         text: 'Data successfully updated',
                     })
-                    $('#AssetsTable').DataTable().ajax.reload();
+                    $('#RolesTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 }
                 else {
@@ -200,7 +192,7 @@ function Update() {
 
 function ConfirmDelete(id) {
     $.ajax({
-        "url": urlBackend + "/assets/" + id,
+        "url": urlBackend + "/roles/" + id,
         "type": "GET",
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
@@ -226,7 +218,7 @@ function ConfirmDelete(id) {
 
 function Delete(id) {
     $.ajax({
-        "url": urlBackend + "/assets/" + id,
+        "url": urlBackend + "/Roles/" + id,
         "type": "DELETE",
         "dataType": "json",
         "success": (result) => {
@@ -236,7 +228,7 @@ function Delete(id) {
                     title: 'Success',
                     text: 'Data successfully deleted',
                 })
-                $('#AssetsTable').DataTable().ajax.reload();
+                $('#RolesTable').DataTable().ajax.reload();
             }
         },
         "error": (result) => {

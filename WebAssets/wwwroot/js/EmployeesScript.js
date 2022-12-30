@@ -45,7 +45,7 @@ $(document).ready(function () {
                     <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
                         <i class="fa fa-trash">
                     </i></button >`
-                }, "width": "15%"
+                }, "width": "17%"
             }
         ],
         "language": {

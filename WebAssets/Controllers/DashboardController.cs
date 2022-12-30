@@ -23,5 +23,10 @@ namespace WebAssets.Controllers
         {
             return View();
         }
+        
+        public IActionResult Roles()
+        {
+            return View();
+        }
     }
 }
