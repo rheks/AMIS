@@ -2,7 +2,10 @@
 using APIAssets.Models;
 using APIAssets.Repositories.Data;
 using APIAssets.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Net;
 
 namespace APIAssets.Controllers
@@ -19,9 +22,11 @@ namespace APIAssets.Controllers
 
         [HttpPost]
         [Route("Register")]
+        [Authorize]
         public ActionResult Register(RegisterEmployee registerEmployee)
         {
             var response = employeesRepository.Register(registerEmployee);
+            
             if (response == 1)
             {
                 return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data employee successfully registered", Data = response });
@@ -42,10 +47,10 @@ namespace APIAssets.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public ActionResult Login(User user)
+        public ActionResult Login(LoginEmployee user)
         {
             var response = employeesRepository.Login(user);
-            if (response == 1)
+            if (response != null)
             {
                 return StatusCode(200, new { Status = HttpStatusCode.OK, Message = "Login successfull", Data = response });
             }

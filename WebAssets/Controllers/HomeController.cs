@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,22 @@ namespace WebAssets.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //HttpContext.Session.SetString("Name", "Areks Ryuno");
+            //return View();
+            return RedirectToPage("/Auth/Login");
         }
 
         public IActionResult Privacy()
         {
+            //ViewBag.sessionv = HttpContext.Session.GetString("Name");
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            //HttpContext.Session.Clear();
+            return RedirectToAction("Privacy");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

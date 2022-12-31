@@ -4,15 +4,23 @@ using APIAssets.Models;
 using APIAssets.ViewModels;
 using System;
 using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace APIAssets.Repositories.Data
 {
     public class EmployeesRepository : GeneralRepository<AppDbContext, Employee, string>
     {
         private readonly AppDbContext appDbContext;
+        //private readonly AppSettings appSettings;
         public EmployeesRepository(AppDbContext appDbContext) : base(appDbContext)
         {
             this.appDbContext = appDbContext;
+            //this.appSettings = appSettings;
         }
 
         public string GenerateNIK()
@@ -72,14 +80,41 @@ namespace APIAssets.Repositories.Data
             return response;
         }
 
-        public int Login(User user)
+        [AllowAnonymous]
+        public LoginEmployee Login([FromBody] LoginEmployee loginEmployee)
         {
-            var response = appDbContext.Users.SingleOrDefault(e => e.NIK == user.NIK);
-            if (response == null || !BC.Verify(user.Password, response.Password))
+            var response = appDbContext.Users.SingleOrDefault(e => e.NIK == loginEmployee.NIK);
+            if (response == null || !BC.Verify(loginEmployee.Password, response.Password))
             {
-                return 0;
+                return null;
             }
-            return 1;
+
+            // JWT Tokens
+            var timeNow = DateTime.Now;
+            
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var secretKey = Encoding.ASCII.GetBytes("aiwjcnoiwnvwpejkv0wejiow4OISENWEJW0J0J249IKF9024UEJ0FU");
+            var tokenDiscriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new []
+                {
+                    new Claim(ClaimTypes.Name, response.Employee.FirstName + " " + response.Employee.LastName),
+                    new Claim(ClaimTypes.Email, response.Employee.Email),
+                    new Claim(ClaimTypes.Role, response.Employee.Role.Name),
+                }),
+                Expires = timeNow.AddMinutes(4),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDiscriptor);
+
+            var loggedUser = new LoginEmployee();
+            loggedUser.NIK = response.NIK;
+            loggedUser.Email = response.Employee.Email;
+            loggedUser.Password = response.Password;
+            loggedUser.Token = tokenHandler.WriteToken(token);
+            loggedUser.TokenExpires = timeNow.AddMinutes(4);
+            return loggedUser;
         }
 
         public int Logout()
