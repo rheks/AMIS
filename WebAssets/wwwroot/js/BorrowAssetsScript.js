@@ -107,9 +107,11 @@ $("#ModalCreate").click(() => {
     $("#InputEmployee").val("");
     $("#InputAsset").val("");
     $("#InputQuantity").val("");
+    $("#InputStatus").val("Accept");
     $("#InputBorrowDate").val("");
     $("#InputReturnDate").val("");
 
+    $("#BodyModal > form > div:nth-child(4)").hide();
     $("#InputQuantity").attr("placeholder", "Input Quantity");
 })
 
@@ -136,6 +138,7 @@ function Create() {
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
+        BorrowAsset.Status = $("#InputStatus").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
@@ -175,6 +178,7 @@ function Create() {
 }
 
 function GetById(id) {
+    $("#BodyModal > form > div:nth-child(4)").show();
     // debugger;
     $.ajax({
         "type": "GET",
@@ -191,6 +195,7 @@ function GetById(id) {
             $('#InputEmployee').val(obj.nik);
             $('#InputAsset').val(obj.asset_Id);
             $('#InputQuantity').val(obj.quantity);
+            $('#InputStatus').val(obj.status);
             $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
             $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
 
@@ -213,6 +218,7 @@ function Update() {
         $("#InputEmployee").val() == "" ||
         $("#InputAsset").val() == "" ||
         $("#InputQuantity").val() == "" ||
+        $("#InputStatus").val() == "" ||
         $("#InputBorrowDate").val() == "" ||
         $("#InputReturnDate").val() == ""
     ) {
@@ -230,6 +236,7 @@ function Update() {
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
+        BorrowAsset.Status = $("#InputStatus").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 

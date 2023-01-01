@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAssets.Controllers
 {
@@ -6,31 +8,115 @@ namespace WebAssets.Controllers
     {
         public IActionResult Index()
         {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            } else
+            {
+                ViewBag.nik = HttpContext.Session.GetString("NIK");
+                ViewBag.name = HttpContext.Session.GetString("Name");
+                ViewBag.role = HttpContext.Session.GetString("Role");
+            }
             return View();
         }
         
         public IActionResult Employees()
         {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {                
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
             return View();
         }
         
         public IActionResult Departements()
         {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
             return View();
         }
         
         public IActionResult Assets()
         {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
             return View();
         }
         
         public IActionResult Roles()
         {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
             return View();
         }
         
         public IActionResult BorrowAssets()
         {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
+            return View();
+        }
+        
+        public IActionResult RequestAssets()
+        {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
             return View();
         }
     }

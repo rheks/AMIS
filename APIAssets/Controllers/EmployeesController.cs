@@ -22,7 +22,7 @@ namespace APIAssets.Controllers
 
         [HttpPost]
         [Route("Register")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Register(RegisterEmployee registerEmployee)
         {
             var response = employeesRepository.Register(registerEmployee);

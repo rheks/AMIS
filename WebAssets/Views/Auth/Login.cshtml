@@ -1,4 +1,5 @@
-﻿
+﻿@model WebAssets.Models.User
+
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/AuthLayout/AuthLayout.cshtml";
@@ -13,38 +14,23 @@
                 <div class="p-5">
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Gas Tahun Baru!!!</h1>
+                        <h2>@ViewBag.Message</h2>
                     </div>
-                    <form class="user">
+                    <form asp-action="Login">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user"
-                                id="InputNIK" pattern="[0-9]+"
-                                placeholder="NIK">
+                            <label asp-for="NIK" class="control-label"></label>
+                            <input asp-for="NIK" class ="form-control" />
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control form-control-user"
-                                id="InputPassword" placeholder="Password">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" type="password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-                        @*<div class="form-group">
-                            <div class="custom-control custom-checkbox small">
-                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                <label class="custom-control-label" for="customCheck">Remember
-                                    Me
-                                </label>
-                            </div>
-                        </div>*@
-                        @*<input type="submit" class="btn btn-primary btn-user btn-block" style="font-size: 1em;" name="login" value="Login" />*@
-                        @*<a href="index.html" class="btn btn-primary btn-user btn-block">
-                            Login
-                        </a>*@
-                        @*<hr>*@
-                        @*<a href="index.html" class="btn btn-google btn-user btn-block">
-                            <i class="fab fa-google fa-fw"></i> Login with Google
-                        </a>
-                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                        </a>*@
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
                     </form>
-                    <button type="button" class="btn btn-primary btn-user btn-block" id="buttonSubmit" onclick="Login()">Create</button>
                     <hr />
                     <div class="text-center">
                         <footer class="footer text-muted">
@@ -53,21 +39,9 @@
                             </div>
                         </footer>
                     </div>
-                    @*<hr>
-                    <div class="text-center">
-                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                    </div>
-                    <div class="text-center">
-                        <a class="small" href="register.html">Create an Account!</a>
-                    </div>*@
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts{
-    <partial name="_ValidationScriptsPartial" />
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/js/LoginScript.js"></script>
-}

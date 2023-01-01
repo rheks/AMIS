@@ -80,7 +80,7 @@ namespace APIAssets.Repositories.Data
             return response;
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public LoginEmployee Login([FromBody] LoginEmployee loginEmployee)
         {
             var response = appDbContext.Users.SingleOrDefault(e => e.NIK == loginEmployee.NIK);

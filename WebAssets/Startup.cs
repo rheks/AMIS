@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebAssets.Models;
 
 namespace WebAssets
 {
@@ -19,10 +21,12 @@ namespace WebAssets
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddControllers().AddNewtonsoftJson(
-            //    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            //services.AddSession();
-            //services.AddDbContext<MVCDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APIAssets")));
+
+            services.AddSession();
+            services.AddControllers().AddNewtonsoftJson(
+                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); });
+            services.AddDbContext<WebDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WebAssets")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +47,8 @@ namespace WebAssets
 
             app.UseRouting();
 
-            //app.UseSession();
+            app.UseSession();
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthorization();
 
@@ -51,7 +56,7 @@ namespace WebAssets
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Auth}/{action=Login}/{id?}");
             });
         }
     }
