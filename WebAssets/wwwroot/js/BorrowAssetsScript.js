@@ -1,5 +1,4 @@
 ﻿let urlBackend = "https://localhost:9001/api";
-let localDay;
 
 $(document).ready(function () {
     $('#tab-borrowassets').addClass("active")
@@ -54,6 +53,9 @@ $(document).ready(function () {
                 }, "width": "17%"
             }
         ],
+        "success": function (data) {
+            console.log(data);
+        },
         "language": {
             "emptyTable": "no data found"
         },
@@ -243,7 +245,7 @@ function Update() {
         console.log(BorrowAsset)
 
         $.ajax({
-            "url": urlBackend + "/borrowassets",
+            "url": urlBackend + "/borrowassets/request",
             "type": "PUT",
             "data": JSON.stringify(BorrowAsset),
             "contentType": "application/json; charset=utf-8",
@@ -286,6 +288,16 @@ function ConfirmDelete(id) {
         "success": (result) => {
             var obj = result.data;
 
+            $('#InputIdBorrowAsset').val(obj.id);
+            $('#InputEmployee').val(obj.nik);
+            $('#InputAsset').val(obj.asset_Id);
+            $('#InputQuantity').val(obj.quantity);
+            $('#InputStatus').val(obj.status);
+            $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
+            $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
+
+            console.log($('#InputIdBorrowAsset').val())
+
             Swal.fire({
                 title: 'Delete data',
                 icon: 'info',
@@ -294,7 +306,7 @@ function ConfirmDelete(id) {
                 showConfirmButton: false,
                 showDenyButton: true,
                 showCancelButton: true,
-                denyButtonText: `<span onclick="Delete('${obj.id}')">Delete</span>`,
+                denyButtonText: `<span onclick="Delete()">Delete</span>`,
                 cancelButtonText: `Close`,
             })
         },
@@ -304,10 +316,22 @@ function ConfirmDelete(id) {
     })
 }
 
-function Delete(id) {
+function Delete() {
+    //debugger;
+    var BorrowAsset = {};
+    BorrowAsset.Id = $("#InputIdBorrowAsset").val();
+    BorrowAsset.NIK = $("#InputEmployee").val();
+    BorrowAsset.Asset_Id = $("#InputAsset").val();
+    BorrowAsset.Quantity = $("#InputQuantity").val();
+    BorrowAsset.Status = $("#InputStatus").val();
+    BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
+    BorrowAsset.Return_Time = $("#InputReturnDate").val();
+
     $.ajax({
-        "url": urlBackend + "/borrowassets/" + id,
+        "url": urlBackend + "/borrowassets/request",
         "type": "DELETE",
+        "data": JSON.stringify(BorrowAsset),
+        "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "success": (result) => {
             if (result.status == 200 || result.status == 201) {

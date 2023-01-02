@@ -69,7 +69,11 @@ $(document).ready(function () {
             var obj = result.data
             $("#InputAsset").append(`<option value="" selected disabled>Choose The Assets</option>`)
             for (let i = 0; i < obj.length; i++) {
-                $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name}</option>`)
+                if (obj[i].stock > 0) {
+                    $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name}</option>`)
+                } else {
+                    $("#InputAsset").append(`<option value="${obj[i].id}" disabled>${obj[i].name} (All Reserved)</option>`)
+                }
             }
         },
         "error": (e) => {

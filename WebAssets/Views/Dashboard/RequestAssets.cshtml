@@ -18,9 +18,10 @@
                 <input type="number" class="form-control" name="IdBorrowAssets" id="InputIdBorrowAsset" hidden>
                 <div class="form-group" hidden>
                     <label for="InputEmployee">Employee</label>
-                    <select class="form-control" id="InputEmployee" name="employee">
-                        <option value="@ViewBag.NIK" selected disabled>@ViewBag.Name</option>
-                    </select>
+                    <input type="number" class="form-control" name="nik" id="InputEmployee" value="@ViewBag.NIK">
+                    @*<select class="form-control" id="InputEmployee" name="employee">
+                        <option value="@ViewBag.NIK" selected>@ViewBag.Name</option>
+                    </select>*@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">

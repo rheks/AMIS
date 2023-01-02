@@ -24,7 +24,7 @@ namespace WebAssets.Controllers
         public IActionResult Privacy()
         {
             return RedirectToAction("Login", "Auth", new { area = "" });
-            return View();
+            //return View();
         }
 
         [HttpGet]
