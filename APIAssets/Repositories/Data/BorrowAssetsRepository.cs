@@ -37,34 +37,6 @@ namespace APIAssets.Repositories.Data
             return response;
         }
         
-        public int UpdateRequestAsset(BorrowAsset borrowAsset)
-        {
-            Asset assets = appDbContext.Assets.SingleOrDefault(a => a.Id == borrowAsset.Asset_Id);
-            if (assets.Stock == borrowAsset.Quantity)
-            {
-                assets.Stock = borrowAsset.Quantity;
-            } 
-            //else if (assets.Stock > borrowAsset.Quantity)
-            //{
-            //    assets.Stock = borrowAsset.Quantity
-            //}
-            assets.Stock = assets.Stock - borrowAsset.Quantity;
-            appDbContext.Entry(assets).State = EntityState.Modified;
-            appDbContext.SaveChanges();
-
-            var BA = new BorrowAsset();
-            BA.NIK = borrowAsset.NIK;
-            BA.Asset_Id = borrowAsset.Asset_Id;
-            BA.Quantity = borrowAsset.Quantity;
-            BA.Status = "Pending";
-            BA.Borrowing_Time = borrowAsset.Borrowing_Time;
-            BA.Return_Time = borrowAsset.Return_Time;
-            appDbContext.Add(BA);
-            var response = appDbContext.SaveChanges();
-            
-            return response;
-        }
-
         public int ReturnAsset(BorrowAsset borrowAsset)
         {
             Asset assets = appDbContext.Assets.SingleOrDefault(a => a.Id == borrowAsset.Asset_Id);

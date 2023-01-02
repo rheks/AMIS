@@ -112,6 +112,7 @@ namespace APIAssets.Repositories.Data
             loggedUser.NIK = response.NIK;
             loggedUser.Email = response.Employee.Email;
             loggedUser.Password = response.Password;
+            loggedUser.Role = response.Employee.Role.Name;
             loggedUser.Token = tokenHandler.WriteToken(token);
             loggedUser.TokenExpires = timeNow.AddMinutes(4);
             return loggedUser;

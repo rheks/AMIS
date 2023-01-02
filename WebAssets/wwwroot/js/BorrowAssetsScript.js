@@ -148,7 +148,7 @@ function Create() {
 
         $.ajax({
             "type": "POST",
-            "url": urlBackend + "/borrowassets",
+            "url": urlBackend + "/borrowassets/request",
             "data": JSON.stringify(BorrowAsset),
             "contentType": "application/json;charset=utf-8",
             "success": (result) => {
@@ -201,6 +201,10 @@ function GetById(id) {
             $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
             $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
 
+            $('#BodyModal > form > div:nth-child(2)').hide();
+            $('#BodyModal > form > div:nth-child(3)').hide();
+            $('#BodyModal > form > div:nth-child(5)').hide();
+
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");
@@ -245,7 +249,7 @@ function Update() {
         console.log(BorrowAsset)
 
         $.ajax({
-            "url": urlBackend + "/borrowassets/request",
+            "url": urlBackend + "/borrowassets",
             "type": "PUT",
             "data": JSON.stringify(BorrowAsset),
             "contentType": "application/json; charset=utf-8",
