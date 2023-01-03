@@ -59,8 +59,8 @@ namespace APIAssets.Migrations
                     b.Property<DateTime>("Return_Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

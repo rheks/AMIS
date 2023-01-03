@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Borrow Assets";
+    ViewData["Title"] = "RequestAssetsManagerAsset";
     Layout = "~/Views/DLayout/DLayout.cshtml";
 }
 
@@ -22,7 +22,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="BorrowAssetsTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="RequestAssetsManagerAssetTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th class="text-center">No.</th>
@@ -42,7 +42,6 @@
 
 </div>
 <!-- /.container-fluid -->
-
 <!-- Modal Create -->
 <div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -70,25 +69,25 @@
                     </div>
                     <div class="form-group">
                         <label for="InputQuantity">Quantity</label>
-                        <input type="number" class="form-control" name="quantity" id="InputQuantity" >
+                        <input type="number" class="form-control" name="quantity" id="InputQuantity">
                     </div>
                     <div class="form-group">
                         <label for="InputStatus">Status</label>
                         <select class="form-control" name="status" id="InputStatus">
                             <option value="" selected disabled>Select The Status</option>
-                            <option value="0">Pending</option>
-                            <option value="1">Accept</option>
+                            <option value="2">Pending</option>
+                            <option value="3">Accept</option>
                             <option value="4">Reject</option>
                         </select>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="InputBorrowDate">Date of Borrow Asset</label>
-                            <input type="date" class="form-control" name="BorrowDate" id="InputBorrowDate" >
+                            <input type="date" class="form-control" name="BorrowDate" id="InputBorrowDate">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="InputReturnDate">Date of Return Asset</label>
-                            <input type="date" class="form-control" name="ReturnDate" id="InputReturnDate" >
+                            <input type="date" class="form-control" name="ReturnDate" id="InputReturnDate">
                         </div>
                     </div>
                 </form>
@@ -104,5 +103,5 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/js/BorrowAssetsScript.js"></script>
+    <script src="~/js/RequestAssetsManagerAssetScript.js"></script>
 }

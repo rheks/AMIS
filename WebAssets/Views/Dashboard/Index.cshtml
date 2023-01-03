@@ -9,13 +9,36 @@
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <br />
         <!-- Button trigger modal -->
 
-        <div class="card-body">
-            <h3>Hello, @ViewBag.name (@ViewBag.nik)</h3>
+        <div class="card-header py-3">
+            <h3>Hello, @ViewBag.name (@ViewBag.nik - @ViewBag.role)</h3>
         </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="RequestAssetsManagerAssetTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No.</th>
+                            <th>Name of Employee</th>
+                            <th>Name of Borrow Asset</th>
+                            <th>Quantity</th>
+                            <th>Borrow Time</th>
+                            <th>Return Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
     </div>
 
 </div>
 <!-- /.container-fluid -->
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/HomeScript.js"></script>
+}

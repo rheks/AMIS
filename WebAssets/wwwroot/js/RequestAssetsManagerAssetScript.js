@@ -1,9 +1,9 @@
 ﻿let urlBackend = "https://localhost:9001/api";
 
 $(document).ready(function () {
-    $('#tab-borrowassets').addClass("active")
+    $('#tab-RequestAssetsManagerAsset').addClass("active")
 
-    $('#BorrowAssetsTable').DataTable({
+    $('#RequestAssetsManagerAssetTable').DataTable({
         "ajax": {
             "url": urlBackend + "/borrowassets",
             "type": "GET",
@@ -42,8 +42,12 @@ $(document).ready(function () {
                 "data": "status",
                 "render": function (data) {
                     if (data == "0") {
-                        return 'Pending'
+                        return 'Pending from Admin'
                     } else if (data == "1") {
+                        return 'Pending From Manager'
+                    } else if (data == "2") {
+                        return 'Pending'
+                    } else if (data == "3") {
                         return 'Accept'
                     } else if (data == "4") {
                         return 'Reject'
@@ -109,6 +113,8 @@ $(document).ready(function () {
         }
     })
 
+    console.log($("#RequestAssetsManagerAssetTable > tbody > tr:nth-child(6) > td:nth-child(7)"))
+
 });
 
 $("#ModalCreate").click(() => {
@@ -155,7 +161,7 @@ function Create() {
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
-        BorrowAsset.Status = $("#InputStatus").val() == null ? 1 : 0;
+        BorrowAsset.Status = $("#InputStatus").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
@@ -173,12 +179,12 @@ function Create() {
                         title: 'Success',
                         text: 'Data successfully created',
                     })
-                    $('#BorrowAssetsTable').DataTable().ajax.reload();
+                    $('#RequestAssetsManagerAssetTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 } else {
                     alert("Data failed to create")
                 }
-                $('#BorrowAssetsTable').DataTable().ajax.reload();
+                $('#RequestAssetsManagerAssetTable').DataTable().ajax.reload();
                 $('#CreateModal').modal("hide");
             },
             "error": (result) => {
@@ -275,7 +281,7 @@ function Update() {
                         title: 'Success',
                         text: 'Data successfully updated',
                     })
-                    $('#BorrowAssetsTable').DataTable().ajax.reload();
+                    $('#RequestAssetsManagerAssetTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 }
                 else {
@@ -359,7 +365,7 @@ function Delete() {
                     title: 'Success',
                     text: 'Data successfully deleted',
                 })
-                $('#BorrowAssetsTable').DataTable().ajax.reload();
+                $('#RequestAssetsManagerAssetTable').DataTable().ajax.reload();
             }
         },
         "error": (result) => {

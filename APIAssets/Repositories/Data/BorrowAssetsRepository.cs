@@ -28,7 +28,7 @@ namespace APIAssets.Repositories.Data
             BA.NIK = borrowAsset.NIK;
             BA.Asset_Id = borrowAsset.Asset_Id;
             BA.Quantity = borrowAsset.Quantity;
-            BA.Status = "Pending";
+            BA.Status = borrowAsset.Status;
             BA.Borrowing_Time = borrowAsset.Borrowing_Time;
             BA.Return_Time = borrowAsset.Return_Time;
             appDbContext.Add(BA);

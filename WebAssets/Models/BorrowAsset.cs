@@ -15,7 +15,7 @@ namespace WebAssets.Models
         //[JsonIgnore]
         public virtual Asset Assets { get; set; }
         public int Quantity { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
         public DateTime Borrowing_Time { get; set; }
         public DateTime Return_Time { get; set; }
     }

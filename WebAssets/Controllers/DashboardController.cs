@@ -119,5 +119,37 @@ namespace WebAssets.Controllers
             ViewBag.role = HttpContext.Session.GetString("Role");
             return View();
         }
+        
+        public IActionResult RequestAssetsManager()
+        {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
+            return View();
+        }
+        
+        public IActionResult RequestAssetsManagerAsset()
+        {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
+            return View();
+        }
     }
 }
