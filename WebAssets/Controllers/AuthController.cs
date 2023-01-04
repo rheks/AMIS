@@ -46,6 +46,10 @@ namespace WebAssets.Controllers
             HttpContext.Session.SetString("NIK", userLogin.NIK);
             HttpContext.Session.SetString("Name", userLogin.Employee.FirstName + " " + userLogin.Employee.LastName);
             HttpContext.Session.SetString("Role", userLogin.Employee.Role.Name);
+            if (HttpContext.Session.GetString("Role") == "Employee")
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "" });
+            }
             return RedirectToAction("Index", "Dashboard", new { area = "" });
 
         }

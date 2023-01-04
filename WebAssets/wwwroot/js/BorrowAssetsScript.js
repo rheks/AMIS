@@ -3,19 +3,36 @@
 $(document).ready(function () {
     $('#tab-borrowassets').addClass("active")
 
-    $('#BorrowAssetsTable').DataTable({
+    let dataBorrowAssets = $('#BorrowAssetsTable').DataTable({
         "ajax": {
             "url": urlBackend + "/borrowassets",
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
+            //"dataSrc": function (json) {
+            //    let obj = json.data;
+            //    obj.forEach((item, index, arr) => {
+            //        if (arr[index].status == 2 || arr[index].status == 3) {
+            //            console.log(item)
+            //        }
+            //    })
+            //    console.log(obj)
+            //    return obj
+            //}
         },
+
+        //"rowCallback": function (row, data, index) {
+        //    if (data.status == 2 || data.status == 3) {
+        //        row.hide()
+        //    }
+        //},
         "columns": [
             {
                 "data": null,
                 "className": "text-center",
                 "render": function (data, type, full, meta) {
                     return meta.row + 1;
+                    return "";
                 }, "width": "1%"
             },
             {
@@ -25,48 +42,64 @@ $(document).ready(function () {
                 }
             },
             { "data": "assets.name" },
-            { "data": "quantity" },
+            {
+                "data": "quantity",
+                "className": "text-center"
+            },
             {
                 "data": "borrowing_Time",
+                "className": "text-center",
                 "render": function (data) {
                     return `${data.slice(0, 10)}`
                 }
             },
             {
                 "data": "return_Time",
+                "className": "text-center",
                 "render": function (data) {
                     return `${data.slice(0, 10)}`
                 }
             },
             {
                 "data": "status",
+                "className": "text-center",
                 "render": function (data) {
                     if (data == "0") {
-                        return 'Pending'
+                        return '<p class="btn btn-warning" style="background-color: #FFB100;">Pending</p>'
                     } else if (data == "1") {
-                        return 'Accept'
+                        return '<p class="btn btn-info">Pending</p>'
+                    } else if (data == "2") {
+                        return '<p class="btn btn-primary" style="background-color: #205295;">Pending</p>'
+                    } else if (data == "3") {
+                        return '<p class="btn btn-success">Accepted</p>'
                     } else if (data == "4") {
-                        return 'Reject'
+                        return '<p class="btn btn-danger">Rejected</p>'
                     }
                 }
             },
             {
                 "data": "id",
                 "className": "text-center",
-                "render": function (data) {
+                "render": function (data, type, full, meta) {
+                    if (full.status == 0) {
+                        return `
+                        <button class="btn btn-warning" data-placement="left" data-toggle="tooltip" data-animation="false" title="Edit" onclick="GetById('${data}')">
+                            <i class="fa fa-pen"></i>
+                        </button > &nbsp;
+                        <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
+                            <i class="fa fa-trash">
+                        </i></button >`
+                    }
                     return `
-                    <button class="btn btn-warning" data-placement="left" data-toggle="tooltip" data-animation="false" title="Edit" onclick="GetById('${data}')">
+                    <button class="btn btn-warning" data-placement="left" data-toggle="tooltip" data-animation="false" title="Edit" onclick="GetById('${data}')" disabled>
                         <i class="fa fa-pen"></i>
                     </button > &nbsp;
-                    <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
+                    <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')" disabled>
                         <i class="fa fa-trash">
                     </i></button >`
                 }, "width": "17%"
             }
         ],
-        "success": function (data) {
-            console.log(data);
-        },
         "language": {
             "emptyTable": "no data found"
         },
@@ -111,9 +144,11 @@ $(document).ready(function () {
 
 });
 
+
 $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
     $("#buttonSubmit").attr("class", "btn btn-success");
+    $("#CreateModalLabel").html("Create New Borrow Asset");
     $("#buttonSubmit").html("Create");
 
     $('#BodyModal > form > div:nth-child(2)').show();
@@ -155,7 +190,7 @@ function Create() {
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
-        BorrowAsset.Status = $("#InputStatus").val() == null ? 1 : 0;
+        BorrowAsset.Status = 1;
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
@@ -222,6 +257,7 @@ function GetById(id) {
 
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
+            $("#CreateModalLabel").html("Update Status Borrow Asset");
             $("#buttonSubmit").html("Update");
             $('#CreateModal').modal("show");
         },

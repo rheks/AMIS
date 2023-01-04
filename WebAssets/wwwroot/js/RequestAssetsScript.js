@@ -38,7 +38,23 @@ $(document).ready(function () {
                     return `${data.slice(0, 10)}`
                 }
             },
-            { "data": "status" },
+            {
+                "data": "status",
+                "className": "text-center",
+                "render": function (data) {
+                    if (data == "0") {
+                        return '<p class="btn btn-warning" style="background-color: #FFB100;">Pending</p>'
+                    } else if (data == "1") {
+                        return '<p class="btn btn-info">Pending</p>'
+                    } else if (data == "2") {
+                        return '<p class="btn btn-primary" style="background-color: #205295;">Pending</p>'
+                    } else if (data == "3") {
+                        return '<p class="btn btn-success">Accepted</p>'
+                    } else if (data == "4") {
+                        return '<p class="btn btn-danger">Rejected</p>'
+                    }
+                }
+            },
             {
                 "data": "id",
                 "className": "text-center",
@@ -67,7 +83,7 @@ $(document).ready(function () {
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
             var obj = result.data
-            $("#InputAsset").append(`<option value="" selected disabled>Choose The Assets</option>`)
+            $("#InputAsset").append(`<option value="" selected disabled>Select The Assets</option>`)
             for (let i = 0; i < obj.length; i++) {
                 if (obj[i].stock > 0) {
                     $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name}</option>`)
@@ -106,6 +122,7 @@ function Create() {
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
+        BorrowAsset.Status = 0;
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 

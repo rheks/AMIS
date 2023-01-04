@@ -25,47 +25,63 @@ $(document).ready(function () {
                 }
             },
             { "data": "assets.name" },
-            { "data": "quantity" },
+            {
+                "data": "quantity",
+                "className": "text-center"
+            },
             {
                 "data": "borrowing_Time",
+                "className": "text-center",
                 "render": function (data) {
                     return `${data.slice(0, 10)}`
                 }
             },
             {
                 "data": "return_Time",
+                "className": "text-center",
                 "render": function (data) {
                     return `${data.slice(0, 10)}`
                 }
             },
             {
                 "data": "status",
+                "className": "text-center",
                 "render": function (data) {
                     if (data == "0") {
-                        return 'Pending from Admin'
+                        return '<p class="btn btn-warning" style="background-color: #FFB100;">Pending</p>'
                     } else if (data == "1") {
-                        return 'Pending From Manager'
+                        return '<p class="btn btn-info">Pending</p>'
                     } else if (data == "2") {
-                        return 'Pending'
+                        return '<p class="btn btn-primary" style="background-color: #205295;">Pending</p>'
                     } else if (data == "3") {
-                        return 'Accept'
+                        return '<p class="btn btn-success">Accepted</p>'
                     } else if (data == "4") {
-                        return 'Reject'
+                        return '<p class="btn btn-danger">Rejected</p>'
                     }
                 }
             },
             {
                 "data": "id",
                 "className": "text-center",
-                "render": function (data) {
+                "render": function (data, type, full, meta) {
+                    if (full.status == 2) {
+                        return `
+                        <button class="btn btn-warning" data-placement="left" data-toggle="tooltip" data-animation="false" title="Edit" onclick="GetById('${data}')">
+                            <i class="fa fa-pen"></i>
+                        </button > &nbsp;
+                        <!-- <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
+                            <i class="fa fa-trash">
+                        </i></button > -->`
+                    }
+
                     return `
-                    <button class="btn btn-warning" data-placement="left" data-toggle="tooltip" data-animation="false" title="Edit" onclick="GetById('${data}')">
-                        <i class="fa fa-pen"></i>
-                    </button > &nbsp;
-                    <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
-                        <i class="fa fa-trash">
-                    </i></button >`
-                }, "width": "17%"
+                        <button class="btn btn-warning" data-placement="left" data-toggle="tooltip" data-animation="false" title="Edit" onclick="GetById('${data}')" disabled>
+                            <i class="fa fa-pen"></i>
+                        </button > &nbsp;
+                        <!-- <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
+                            <i class="fa fa-trash">
+                        </i></button > -->`
+                }, "width": "10%"
             }
         ],
         "success": function (data) {
@@ -113,8 +129,6 @@ $(document).ready(function () {
         }
     })
 
-    console.log($("#RequestAssetsManagerAssetTable > tbody > tr:nth-child(6) > td:nth-child(7)"))
-
 });
 
 $("#ModalCreate").click(() => {
@@ -161,7 +175,7 @@ function Create() {
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
-        BorrowAsset.Status = $("#InputStatus").val();
+        BorrowAsset.Status = 3;
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
