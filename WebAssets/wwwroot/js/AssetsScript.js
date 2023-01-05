@@ -1,5 +1,4 @@
-﻿let urlBackend = "https://localhost:9001/api";
-let localDay;
+﻿let localDay;
 
 $(document).ready(function () {
     $('#tab-assets').addClass("active")
@@ -10,7 +9,15 @@ $(document).ready(function () {
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
+            "error": (e) => {
+                document.querySelector("#AssetsTable > tbody > tr > td").innerHTML = "Data Not Available";
+            },
         },
+        //"rowCallback": function (row, data, index) {
+        //    if (data.stock != 7) {
+        //        $(row).hide()
+        //    }
+        //},
         "columns": [
             {
                 "data": null,
@@ -40,6 +47,53 @@ $(document).ready(function () {
         },
         "width": "100%"
     });
+
+    //$.ajax({
+    //    "url": urlBackend + "/assets",
+    //    "type": "GET",
+    //    "datatype": "json",
+    //    "dataSrc": "data",
+    //    "contentType": "application/json;charset=utf-8",
+    //    "success": (result) => {
+    //        var obj = result.data
+    //        $('#AssetsTable').DataTable({
+    //            "data": obj,
+    //            "columns": [
+    //                {
+    //                    "data": null,
+    //                    "className": "text-center",
+    //                    "render": function (data, type, full, meta) {
+    //                        return meta.row + 1;
+    //                    }, "width": "1%"
+    //                },
+    //                { "data": "name" },
+    //                { "data": "stock" },
+    //                {
+    //                    "data": "id",
+    //                    "className": "text-center",
+    //                    "render": function (data) {
+    //                        return `
+    //                        <button class="btn btn-warning" data-placement="left" data-toggle="tooltip" data-animation="false" title="Edit" onclick="GetById('${data}')">
+    //                            <i class="fa fa-pen"></i>
+    //                        </button > &nbsp;
+    //                        <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
+    //                            <i class="fa fa-trash">
+    //                        </i></button >`
+    //                    }, "width": "17%"
+    //                }
+    //            ],
+
+    //        });
+    //    },
+    //    "error": (e) => {
+    //        let bodyTable = document.createElement("tbody")
+    //        bodyTable.innerHTML = `<tr>
+    //                                    <td class="text-center" colspan="6">Data not available</td>
+    //                               </tr>`
+    //        document.getElementById("AssetsTable").appendChild(bodyTable);
+    //    }
+    //})
+    
 });
 
 $("#ModalCreate").click(() => {
@@ -51,6 +105,7 @@ $("#ModalCreate").click(() => {
     $("#InputAssetName").val("");
     $("#InputStock").val("");
 
+    $("#CreateModalLabel").html("Create New Asset");
     $("#InputAssetName").attr("placeholder", "Input Name of Asset");
     $("#InputStock").attr("placeholder", "Input Stock");
 })
@@ -129,6 +184,7 @@ function GetById(id) {
 
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
+            $("#CreateModalLabel").html("Update Asset");
             $("#buttonSubmit").html("Update");
             $('#CreateModal').modal("show");
         },

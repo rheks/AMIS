@@ -42,9 +42,10 @@
 
 </div>
 <!-- /.container-fluid -->
+
 <!-- Modal Create -->
 <div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="CreateModalLabel">Create New Borrow Asset</h5>
@@ -55,21 +56,22 @@
             <div class="modal-body" id="BodyModal">
                 <form method="post">
                     <input type="number" class="form-control" name="IdBorrowAssets" id="InputIdBorrowAsset" hidden>
+                    <input type="number" class="form-control" name="nik" id="InputEmployee" value="" hidden>
+                    <input type="number" class="form-control" name="nikUser" id="InputUser" value="@ViewBag.NIK" hidden>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="InputEmployee">Employee</label>
-                            <select class="form-control" id="InputEmployee" name="employee">
-                            </select>
-                        </div>
                         <div class="form-group col-md-6">
                             <label for="InputAsset">Asset</label>
                             <select class="form-control" id="InputAsset" name="asset">
                             </select>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputQuantity">Quantity</label>
+                            <input type="number" class="form-control" name="quantity" id="InputQuantity">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="InputQuantity">Quantity</label>
-                        <input type="number" class="form-control" name="quantity" id="InputQuantity">
+                        <label for="InputReason">Reason</label>
+                        <textarea class="form-control" name="reason" id="InputReason"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="InputStatus">Status</label>

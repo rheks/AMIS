@@ -56,6 +56,9 @@ namespace APIAssets.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Return_Time")
                         .HasColumnType("datetime2");
 

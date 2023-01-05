@@ -1,5 +1,4 @@
-﻿let urlBackend = "https://localhost:9001/api";
-
+﻿
 $(document).ready(function () {
     $('#tab-borrowassets').addClass("active")
 
@@ -106,6 +105,7 @@ function Create() {
         $("#InputEmployee").val() == "" ||
         $("#InputAsset").val() == "" ||
         $("#InputQuantity").val() == "" ||
+        $("#InputReason").val() == "" ||
         $("#InputBorrowDate").val() == "" ||
         $("#InputReturnDate").val() == ""
     ) {
@@ -154,6 +154,7 @@ function Create() {
                 //$("#InputEmployee").val("");
                 $("#InputAsset").val("");
                 $("#InputQuantity").val("");
+                $("#InputReason").val("");
                 $("#InputBorrowDate").val("");
                 $("#InputReturnDate").val("");
             },

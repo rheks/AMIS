@@ -1,5 +1,4 @@
-﻿var loginURL = "https://localhost:9001/api/employees/login"
-
+﻿
 function Login() {
     let validateForm = true;
 
@@ -24,7 +23,7 @@ function Login() {
 
         $.ajax({
             "type": "POST",
-            "url": loginURL,
+            "url": urlBackend + "/employees/login",
             "data": JSON.stringify(Login),
             "contentType": "application/json;charset=utf-8",
             "headers": { Authorization: $`Bearer ${localStorage.getItem("token")}` },

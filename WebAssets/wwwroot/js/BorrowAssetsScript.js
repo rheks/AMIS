@@ -1,14 +1,21 @@
-﻿let urlBackend = "https://localhost:9001/api";
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $('#tab-borrowassets').addClass("active")
 
-    let dataBorrowAssets = $('#BorrowAssetsTable').DataTable({
+    $('#BorrowAssetsTable').DataTable({
         "ajax": {
-            "url": urlBackend + "/borrowassets",
+            "url": urlBackend + "/borrowassets/request/pending",
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
+            "error": (e) => {
+                //let bodyTable = document.createElement("tbody")
+                //bodyTable.innerHTML = `<tr>
+                //                            <td class="text-center" colspan="9">Data not available</td>
+                //                       </tr>`
+                //document.getElementById("BorrowAssetsTable").appendChild(bodyTable);
+                document.querySelector("#BorrowAssetsTable > tbody > tr > td").innerHTML = "Data Not Available";
+            },
+            
             //"dataSrc": function (json) {
             //    let obj = json.data;
             //    obj.forEach((item, index, arr) => {
@@ -97,12 +104,9 @@ $(document).ready(function () {
                     <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')" disabled>
                         <i class="fa fa-trash">
                     </i></button >`
-                }, "width": "17%"
+                }, "width": "13%"
             }
         ],
-        "language": {
-            "emptyTable": "no data found"
-        },
         "width": "100%"
     });
 
@@ -142,6 +146,136 @@ $(document).ready(function () {
         }
     })
 
+
+    $('#BorrowAssets2Table').DataTable({
+        "ajax": {
+            "url": urlBackend + "/borrowassets/request/3",
+            "type": "GET",
+            "datatype": "json",
+            "dataSrc": "data",
+            "error": (e) => {
+                document.querySelector("#BorrowAssetsTable > tbody > tr > td").innerHTML = "Data Not Available";
+            },
+        },
+        "columns": [
+            {
+                "data": null,
+                "className": "text-center",
+                "render": function (data, type, full, meta) {
+                    return meta.row + 1;
+                    return "";
+                }, "width": "1%"
+            },
+            {
+                "data": "users.employee",
+                "render": function (data) {
+                    return `${data.firstName} ${data.lastName}`
+                }
+            },
+            { "data": "assets.name" },
+            {
+                "data": "quantity",
+                "className": "text-center"
+            },
+            {
+                "data": "borrowing_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "return_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "status",
+                "className": "text-center",
+                "render": function (data) {
+                    if (data == "0") {
+                        return '<p class="btn btn-warning" style="background-color: #FFB100;">Pending</p>'
+                    } else if (data == "1") {
+                        return '<p class="btn btn-info">Pending</p>'
+                    } else if (data == "2") {
+                        return '<p class="btn btn-primary" style="background-color: #205295;">Pending</p>'
+                    } else if (data == "3") {
+                        return '<p class="btn btn-success">Accepted</p>'
+                    } else if (data == "4") {
+                        return '<p class="btn btn-danger">Rejected</p>'
+                    }
+                }, "width": "10%"
+            },
+        ],
+        "width": "100%"
+    });
+
+    $('#BorrowAssets3Table').DataTable({
+        "ajax": {
+            "url": urlBackend + "/borrowassets/request/4",
+            "type": "GET",
+            "datatype": "json",
+            "dataSrc": "data",
+            "error": (e) => {
+                document.querySelector("#BorrowAssetsTable > tbody > tr > td").innerHTML = "Data Not Available";
+            },
+        },
+        "columns": [
+            {
+                "data": null,
+                "className": "text-center",
+                "render": function (data, type, full, meta) {
+                    return meta.row + 1;
+                    return "";
+                }, "width": "1%"
+            },
+            {
+                "data": "users.employee",
+                "render": function (data) {
+                    return `${data.firstName} ${data.lastName}`
+                }
+            },
+            { "data": "assets.name" },
+            {
+                "data": "quantity",
+                "className": "text-center"
+            },
+            {
+                "data": "borrowing_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "return_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "status",
+                "className": "text-center",
+                "render": function (data) {
+                    if (data == "0") {
+                        return '<p class="btn btn-warning" style="background-color: #FFB100;">Pending</p>'
+                    } else if (data == "1") {
+                        return '<p class="btn btn-info">Pending</p>'
+                    } else if (data == "2") {
+                        return '<p class="btn btn-primary" style="background-color: #205295;">Pending</p>'
+                    } else if (data == "3") {
+                        return '<p class="btn btn-success">Accepted</p>'
+                    } else if (data == "4") {
+                        return '<p class="btn btn-danger">Rejected</p>'
+                    }
+                }
+            },
+        ]
+    });
+
 });
 
 
@@ -153,18 +287,21 @@ $("#ModalCreate").click(() => {
 
     $('#BodyModal > form > div:nth-child(2)').show();
     $('#BodyModal > form > div:nth-child(3)').show();
-    $('#BodyModal > form > div:nth-child(5)').show();
+    $('#BodyModal > form > div:nth-child(4)').show();
+    $('#BodyModal > form > div:nth-child(6)').show();
 
     $("#InputIdBorrowAsset").val("");
     $("#InputEmployee").val("");
     $("#InputAsset").val("");
     $("#InputQuantity").val("");
-    $("#InputStatus").val("Accept");
+    $("#InputStatus").val("");
+    $("#InputReason").val("");
     $("#InputBorrowDate").val("");
     $("#InputReturnDate").val("");
 
-    $("#BodyModal > form > div:nth-child(4)").hide();
+    $("#BodyModal > form > div:nth-child(5)").hide();
     $("#InputQuantity").attr("placeholder", "Input Quantity");
+    $("#InputReason").attr("placeholder", "Input Reason");
 })
 
 function Create() {
@@ -190,7 +327,9 @@ function Create() {
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
+        //BorrowAsset.Status = $("#InputStatus").val();
         BorrowAsset.Status = 1;
+        BorrowAsset.Reason = $("#InputReason").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
@@ -248,16 +387,20 @@ function GetById(id) {
             $('#InputAsset').val(obj.asset_Id);
             $('#InputQuantity').val(obj.quantity);
             $('#InputStatus').val(obj.status);
+            $('#InputReason').val(obj.reason);
             $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
             $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
 
             $('#BodyModal > form > div:nth-child(2)').hide();
             $('#BodyModal > form > div:nth-child(3)').hide();
-            $('#BodyModal > form > div:nth-child(5)').hide();
+            $('#BodyModal > form > div:nth-child(4)').hide();
+            $('#BodyModal > form > div:nth-child(6)').hide();
+
+            $("#BodyModal > form > div:nth-child(5)").show();
 
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
-            $("#CreateModalLabel").html("Update Status Borrow Asset");
+            $("#CreateModalLabel").html("Update Borrow Asset");
             $("#buttonSubmit").html("Update");
             $('#CreateModal').modal("show");
         },
@@ -276,6 +419,7 @@ function Update() {
         $("#InputAsset").val() == "" ||
         $("#InputQuantity").val() == "" ||
         $("#InputStatus").val() == "" ||
+        $("#InputReason").val() == "" ||
         $("#InputBorrowDate").val() == "" ||
         $("#InputReturnDate").val() == ""
     ) {
@@ -294,6 +438,7 @@ function Update() {
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
         BorrowAsset.Status = $("#InputStatus").val();
+        BorrowAsset.Reason = $("#InputReason").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
@@ -348,6 +493,7 @@ function ConfirmDelete(id) {
             $('#InputAsset').val(obj.asset_Id);
             $('#InputQuantity').val(obj.quantity);
             $('#InputStatus').val(obj.status);
+            $('#InputReason').val(obj.reason);
             $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
             $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
 
@@ -379,6 +525,7 @@ function Delete() {
     BorrowAsset.Asset_Id = $("#InputAsset").val();
     BorrowAsset.Quantity = $("#InputQuantity").val();
     BorrowAsset.Status = $("#InputStatus").val();
+    BorrowAsset.Reason = $("#InputReason").val();
     BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
     BorrowAsset.Return_Time = $("#InputReturnDate").val();
 

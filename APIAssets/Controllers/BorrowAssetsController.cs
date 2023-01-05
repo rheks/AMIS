@@ -3,6 +3,7 @@ using APIAssets.Models;
 using APIAssets.Repositories.Data;
 using APIAssets.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Net;
 
 namespace APIAssets.Controllers
@@ -17,6 +18,48 @@ namespace APIAssets.Controllers
             this.borrowAssetsRepository = borrowAssetsRepository;
         }
 
+        [HttpGet]
+        [Route("Request/{status}")]
+        //[Authorize]
+        public ActionResult RequestAssetStatus(int status)
+        {
+            var response = borrowAssetsRepository.RequestAssetStatus(status);
+
+            if (response.Count() >= 1)
+            {
+                return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data borrow asset found", Data = response });
+            }
+            else if (response.Count() == 0)
+            {
+                return StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Data borrow asset not found", Data = response });
+            }
+            else
+            {
+                return StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response });
+            }
+        }
+        
+        [HttpGet]
+        [Route("Request/Pending")]
+        //[Authorize]
+        public ActionResult RequestAssetPending()
+        {
+            var response = borrowAssetsRepository.RequestAssetPending();
+
+            if (response.Count() >= 1)
+            {
+                return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data borrow asset found", Data = response });
+            }
+            else if (response.Count() == 0)
+            {
+                return StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Data borrow asset not found", Data = response });
+            }
+            else
+            {
+                return StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response });
+            }
+        }
+        
         [HttpPost]
         [Route("Request")]
         //[Authorize]

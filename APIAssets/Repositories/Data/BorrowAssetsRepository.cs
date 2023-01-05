@@ -3,8 +3,8 @@ using APIAssets.Models;
 using APIAssets.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace APIAssets.Repositories.Data
@@ -15,6 +15,20 @@ namespace APIAssets.Repositories.Data
         public BorrowAssetsRepository(AppDbContext appDbContext) : base(appDbContext)
         {
             this.appDbContext = appDbContext;
+        }
+
+        public IEnumerable<BorrowAsset> RequestAssetStatus(int status)
+        {
+            var reponse = appDbContext.BorrowAssets.Where(a => a.Status == status).ToList();
+
+            return reponse;
+        }
+        
+        public IEnumerable<BorrowAsset> RequestAssetPending()
+        {
+            var reponse = appDbContext.BorrowAssets.Where(a => a.Status == 0 || a.Status == 1 || a.Status == 2).ToList();
+
+            return reponse;
         }
 
         public int RequestAsset(BorrowAsset borrowAsset)
@@ -29,8 +43,10 @@ namespace APIAssets.Repositories.Data
             BA.Asset_Id = borrowAsset.Asset_Id;
             BA.Quantity = borrowAsset.Quantity;
             BA.Status = borrowAsset.Status;
+            BA.Reason = borrowAsset.Reason;
             BA.Borrowing_Time = borrowAsset.Borrowing_Time;
             BA.Return_Time = borrowAsset.Return_Time;
+
             appDbContext.Add(BA);
             var response = appDbContext.SaveChanges();
             

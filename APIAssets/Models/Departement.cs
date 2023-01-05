@@ -14,7 +14,7 @@ namespace APIAssets.Models
         [ForeignKey("EmployeeHoD")]
         public string NIK_HoD { get; set; }
 
-        //[JsonIgnore]
+        //[jsonignore]
         public virtual Employee EmployeeHoD { get; set; }
 
         [JsonIgnore]

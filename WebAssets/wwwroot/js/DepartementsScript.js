@@ -1,5 +1,4 @@
-﻿let urlBackend = "https://localhost:9001/api";
-let localDay;
+﻿let localDay;
 
 $(document).ready(function () {
     $('#tab-departements').addClass("active")
@@ -48,7 +47,10 @@ $(document).ready(function () {
         },
         "width": "100%"
     });
+    allEmployees()
+});
 
+function allEmployees() {
     $.ajax({
         "url": urlBackend + "/employees",
         "type": "GET",
@@ -57,16 +59,21 @@ $(document).ready(function () {
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
             var obj = result.data
+            $("#InputHOD").empty()
             $("#InputHOD").append(`<option value="" selected disabled>Choose the Head of Departement</option>`)
             for (let i = 0; i < obj.length; i++) {
-                $("#InputHOD").append(`<option value="${obj[i].nik}">${obj[i].firstName} ${obj[i].lastName}</option>`)
+                if (obj[i].departements.niK_HoD != obj[i].nik) {
+                    $("#InputHOD").append(`<option value="${obj[i].nik}">${obj[i].firstName} ${obj[i].lastName}</option>`)
+                }
+                $("#InputHOD").append(`<option value="${obj[i].nik}" disabled hidden>${obj[i].firstName} ${obj[i].lastName}</option>`)
             }
         },
         "error": (e) => {
             alert(e.responseText)
         }
     })
-});
+
+}
 
 $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
@@ -199,6 +206,7 @@ function Update() {
                         title: 'Success',
                         text: 'Data successfully updated',
                     })
+                    allEmployees()
                     $('#DepartementsTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 }

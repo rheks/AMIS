@@ -1,5 +1,4 @@
-﻿let urlBackend = "https://localhost:9001/api";
-
+﻿
 $(document).ready(function () {
     $('#tab-RequestAssetsManagerAsset').addClass("active")
 
@@ -135,30 +134,35 @@ $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
+    $("#CreateModalLabel").html("Create New Borrow Asset");
 
-    $('#BodyModal > form > div:nth-child(2)').show();
-    $('#BodyModal > form > div:nth-child(3)').show();
+    $('#BodyModal > form > div:nth-child(4)').show();
     $('#BodyModal > form > div:nth-child(5)').show();
+    $('#BodyModal > form > div:nth-child(7)').show();
+
+    $("#BodyModal > form > div:nth-child(6)").hide();
 
     $("#InputIdBorrowAsset").val("");
     $("#InputEmployee").val("");
     $("#InputAsset").val("");
     $("#InputQuantity").val("");
     $("#InputStatus").val("Accept");
+    $("#InputReason").val("");
     $("#InputBorrowDate").val("");
     $("#InputReturnDate").val("");
 
-    $("#BodyModal > form > div:nth-child(4)").hide();
     $("#InputQuantity").attr("placeholder", "Input Quantity");
+    $("#InputReason").attr("placeholder", "Input Reason");
 })
 
 function Create() {
     let validateForm = true;
 
     if (
-        $("#InputEmployee").val() == "" ||
+        $("#InputUser").val() == "" ||
         $("#InputAsset").val() == "" ||
         $("#InputQuantity").val() == "" ||
+        $("#InputReason").val() == "" ||
         $("#InputBorrowDate").val() == "" ||
         $("#InputReturnDate").val() == ""
     ) {
@@ -172,10 +176,11 @@ function Create() {
 
     if (validateForm) {
         var BorrowAsset = {};
-        BorrowAsset.NIK = $("#InputEmployee").val();
+        BorrowAsset.NIK = $("#InputUser").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
         BorrowAsset.Status = 3;
+        BorrowAsset.Reason = $("#InputReason").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
@@ -233,16 +238,20 @@ function GetById(id) {
             $('#InputAsset').val(obj.asset_Id);
             $('#InputQuantity').val(obj.quantity);
             $('#InputStatus').val(obj.status);
+            $('#InputReason').val(obj.reason);
             $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
             $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
 
-            $('#BodyModal > form > div:nth-child(2)').hide();
-            $('#BodyModal > form > div:nth-child(3)').hide();
+            $('#BodyModal > form > div:nth-child(4)').hide();
             $('#BodyModal > form > div:nth-child(5)').hide();
+            $('#BodyModal > form > div:nth-child(7)').hide();
+
+            $("#BodyModal > form > div:nth-child(6)").show();
 
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");
+            $("#CreateModalLabel").html("Update Status Borrow Asset");
             $('#CreateModal').modal("show");
         },
         error: function (errormesage) {
@@ -260,6 +269,7 @@ function Update() {
         $("#InputAsset").val() == "" ||
         $("#InputQuantity").val() == "" ||
         $("#InputStatus").val() == "" ||
+        $("#InputReason").val() == "" ||
         $("#InputBorrowDate").val() == "" ||
         $("#InputReturnDate").val() == ""
     ) {
@@ -278,6 +288,7 @@ function Update() {
         BorrowAsset.Asset_Id = $("#InputAsset").val();
         BorrowAsset.Quantity = $("#InputQuantity").val();
         BorrowAsset.Status = $("#InputStatus").val();
+        BorrowAsset.Reason = $("#InputReason").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
@@ -332,6 +343,7 @@ function ConfirmDelete(id) {
             $('#InputAsset').val(obj.asset_Id);
             $('#InputQuantity').val(obj.quantity);
             $('#InputStatus').val(obj.status);
+            $('#InputReason').val(obj.reason);
             $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
             $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
 
@@ -363,6 +375,7 @@ function Delete() {
     BorrowAsset.Asset_Id = $("#InputAsset").val();
     BorrowAsset.Quantity = $("#InputQuantity").val();
     BorrowAsset.Status = $("#InputStatus").val();
+    BorrowAsset.Reason = $("#InputReason").val();
     BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
     BorrowAsset.Return_Time = $("#InputReturnDate").val();
 

@@ -11,7 +11,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
     dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
     s = '',
-    toFixedFix = function(n, prec) {
+    toFixedFix = function(n, prec) {    
       var k = Math.pow(10, prec);
       return '' + Math.round(n * k) / k;
     };
@@ -32,13 +32,13 @@ var ctx = document.getElementById("myBarChart");
 var myBarChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: ["January", "February", "March", "April", "May"],
     datasets: [{
       label: "Revenue",
       backgroundColor: "#4e73df",
       hoverBackgroundColor: "#2e59d9",
       borderColor: "#4e73df",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
+      data: [4215, 5312, 6251, 7841, 9821],
     }],
   },
   options: {

@@ -17,7 +17,7 @@
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Total Stock Assets
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                            <div id="TotalStockAssets" class="h5 mb-0 font-weight-bold text-gray-800"></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -36,7 +36,7 @@
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Total Borrow Assets
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            <div id="TotalBorrowAssets" class="h5 mb-0 font-weight-bold text-gray-800"></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -57,12 +57,7 @@
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                    <div id="TotalItems" class="h5 mb-0 mr-3 font-weight-bold text-gray-800"></div>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +78,7 @@
                             <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                                 Total Employees
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div id="TotalEmployees" class="h5 mb-0 font-weight-bold text-gray-800"></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -103,29 +98,115 @@
         </div>
 
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="HomeEmployeeTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th class="text-center">No.</th>
-                            <th>Name of Employee</th>
-                            <th>Name of Borrow Asset</th>
-                            <th>Quantity</th>
-                            <th>Borrow Time</th>
-                            <th>Return Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                </table>
+
+            <ul id="myTab" class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" href="#tab-1" data-target=".etab-p1, .etabi-img1" data-toggle="tab">Pending</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-2" data-target=".etab-p2, .etabi-img2" data-toggle="tab">Accepted</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-3" data-target=".etab-p3, .etabi-img3" data-toggle="tab">Rejected</a></li>
+            </ul>
+            <br />
+            <div class="tab-content">
+                <div class="tab-pane fade show active etab-p1 ml-1">
+                    <div>
+                        <button type="button" class="btn btn-success" id="ModalCreate" data-toggle="modal" data-target="#CreateModal">
+                            Create New Borrow Asset
+                        </button>
+                    </div>
+                    <!-- Button trigger modal -->
+
+                    <br />
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="HomeEmployeeTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th>Name of Employee</th>
+                                    <th>Name of Asset</th>
+                                    <th>Quantity</th>
+                                    <th>Borrow Time</th>
+                                    <th>Return Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade etab-p2 ml-1">
+                    <p>Accepted</p>
+                </div>
+                <div class="tab-pane fade etab-p3 ml-1">
+                    <p>Rejected</p>
+                </div>
             </div>
+
         </div>
 
     </div>
 
 </div>
 <!-- /.container-fluid -->
+
+<!-- Modal Create -->
+<div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CreateModalLabel">Create New Borrow Asset</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="BodyModal">
+                <form method="post">
+                    <input type="number" class="form-control" name="nik" id="InputEmployee" value="@ViewBag.NIK" hidden>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputAsset">Asset</label>
+                            <select class="form-control" id="InputAsset" name="asset">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputQuantity">Quantity</label>
+                            <input type="number" class="form-control" name="quantity" id="InputQuantity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputReason">Reason</label>
+                        <textarea class="form-control" name="reason" id="InputReason"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputStatus">Status</label>
+                        <select class="form-control" name="status" id="InputStatus">
+                            <option value="" selected disabled>Select The Status</option>
+                            <option value="0">Pending</option>
+                            <option value="1">Accept</option>
+                            <option value="4">Reject</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="InputBorrowDate">Date of Borrow Asset</label>
+                            <input type="date" class="form-control" name="BorrowDate" id="InputBorrowDate">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="InputReturnDate">Date of Return Asset</label>
+                            <input type="date" class="form-control" name="ReturnDate" id="InputReturnDate">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="buttonSubmit" onclick="Create()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/HomeScript.js"></script>
     <script src="~/js/HomeEmployeeScript.js"></script>
 }

@@ -43,6 +43,7 @@ namespace APIAssets.Migrations
                     NIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Asset_Id = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Borrowing_Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Return_Time = table.Column<DateTime>(type: "datetime2", nullable: false)

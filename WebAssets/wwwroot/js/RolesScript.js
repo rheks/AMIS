@@ -1,5 +1,4 @@
-﻿let urlBackend = "https://localhost:9001/api";
-let localDay;
+﻿let localDay;
 
 $(document).ready(function () {
     $('#tab-roles').addClass("active")
@@ -31,7 +30,7 @@ $(document).ready(function () {
                     <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
                         <i class="fa fa-trash">
                     </i></button >`
-                }, "width": "17%"
+                }, "width": "13%"
             }
         ],
         "language": {
@@ -45,6 +44,7 @@ $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
+    $('#CreateModalLabel').html("Create New Role");
 
     $("#InputIdRole").val("");
     $("#InputRoleName").val("");
@@ -125,6 +125,7 @@ function GetById(id) {
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");
             $('#CreateModal').modal("show");
+            $('#CreateModalLabel').html("Update Role");
         },
         error: function (errormesage) {
             swal("Data failed to input!", "You clicked the button!", "error");

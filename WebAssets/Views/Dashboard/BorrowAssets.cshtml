@@ -13,7 +13,7 @@
             <h6 class="m-0 font-weight-bold text-primary">List of Borrow Assets</h6>
         </div>
         <br />
-        <div class="col-6">
+        <div class="col-6 ml-2">
             <button type="button" class="btn btn-success" id="ModalCreate" data-toggle="modal" data-target="#CreateModal">
                 Create New Borrow Asset
             </button>
@@ -21,22 +21,69 @@
         <!-- Button trigger modal -->
 
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="BorrowAssetsTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th class="text-center">No.</th>
-                            <th>Name of Employee</th>
-                            <th>Name of Borrow Asset</th>
-                            <th>Quantity</th>
-                            <th>Borrow Time</th>
-                            <th>Return Time</th>
-                            <th>Status</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                </table>
+
+            <ul id="myTab" class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" href="#tab-1" data-target=".etab-p1, .etabi-img1" data-toggle="tab">Pending</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-2" data-target=".etab-p2, .etabi-img2" data-toggle="tab">Accepted</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-3" data-target=".etab-p3, .etabi-img3" data-toggle="tab">Rejected</a></li>
+            </ul>
+            <br />
+            <div class="tab-content">
+                <div class="tab-pane fade show active etab-p1 ml-1">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="BorrowAssetsTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th>Employee</th>
+                                    <th>Asset</th>
+                                    <th>Quantity</th>
+                                    <th>Borrow Date</th>
+                                    <th>Return Date</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade etab-p2 ml-1">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="BorrowAssets2Table" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th>Employee</th>
+                                    <th>Asset</th>
+                                    <th>Quantity</th>
+                                    <th>Borrow Date</th>
+                                    <th>Return Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade etab-p3 ml-1">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="BorrowAssets3Table" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th>Employee</th>
+                                    <th>Asset</th>
+                                    <th>Quantity</th>
+                                    <th>Borrow Date</th>
+                                    <th>Return Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
+                
+            
         </div>
     </div>
 
@@ -45,7 +92,7 @@
 
 <!-- Modal Create -->
 <div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="CreateModalLabel">Create New Borrow Asset</h5>
@@ -71,6 +118,10 @@
                     <div class="form-group">
                         <label for="InputQuantity">Quantity</label>
                         <input type="number" class="form-control" name="quantity" id="InputQuantity" >
+                    </div>
+                    <div class="form-group">
+                        <label for="InputReason">Reason</label>
+                        <textarea class="form-control" name="reason" id="InputReason"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="InputStatus">Status</label>

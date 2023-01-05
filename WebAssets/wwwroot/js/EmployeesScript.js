@@ -1,5 +1,4 @@
-﻿let urlBackend = "https://localhost:9001/api";
-let localDay;
+﻿let localDay;
 
 $(document).ready(function () {
     $('#tab-employees').addClass("active")
@@ -19,8 +18,12 @@ $(document).ready(function () {
                     return meta.row + 1;
                 }, "width": "1%"
             },
-            { "data": "firstName" },
-            { "data": "lastName" },
+            {
+                "data": "firstName",
+                "render": function (data, type, full, meta) {
+                    return `${full.firstName} ${full.lastName}`;
+                }
+            },
             { "data": "role.name" },
             //{ "data": "birthOfDate" },
             { "data": "departements.name" },
@@ -44,7 +47,7 @@ $(document).ready(function () {
                     <button class="btn btn-danger" data-placement="right" data-toggle="tooltip" data-animation="false" title="Delete" onclick="ConfirmDelete('${data}')">
                         <i class="fa fa-trash">
                     </i></button >`
-                }, "width": "17%"
+                }, "width": "12%"
             }
         ],
         "language": {
@@ -94,6 +97,7 @@ $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
+    $("#CreateModalLabel").html("Create New Employee");
     $("#BodyModal > form > div:nth-child(6)").show()
 
     $("#InputNIK").val("");
@@ -233,6 +237,7 @@ function GetById(id) {
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");
+            $("#CreateModalLabel").html("Update Employee");
             $('#CreateModal').modal("show");
         },
         error: function (errormesage) {

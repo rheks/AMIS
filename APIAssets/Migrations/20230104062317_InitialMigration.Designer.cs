@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIAssets.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230103024739_InitialMigration")]
+    [Migration("20230104062317_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,9 @@ namespace APIAssets.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Return_Time")
                         .HasColumnType("datetime2");
