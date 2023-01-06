@@ -27,11 +27,54 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
+let dataEmployees = [];
+let dataTotalBorrowAssets = [];
+
+//fetch(urlBackend + "/BorrowAssets/Request/EmployeesMostFrequentlyBorrowAssets")
+//    .then(function (response) {
+//        // response is a json string
+//        return response.json(); // convert it to a pure JavaScript object
+//    })
+//    .then(function (result) {
+//        var obj = result.data;
+
+//        obj.forEach((data, index, arr) => {
+//            //console.log(data.nik)
+//            dataEmployees.push(data.nik)
+//        })
+//    })
+//    .catch(function (err) {
+//        console.log(err);
+//    });
+console.log(dataEmployees)
+console.log(["January", "February", "March", "April", "May"])
+
+let dataLabels = $.ajax({
+    "type": "GET",
+    "url": urlBackend + "/BorrowAssets/Request/EmployeesMostFrequentlyBorrowAssets",
+    "contentType": "application/json; charset=utf-8",
+    "dataType": "json",
+    "success": function (result) {
+        var obj = result.data;
+
+        obj.forEach((data, index, arr) => {
+            //console.log(data.nik)
+            dataEmployees.push(toString(data.firstName))
+            dataTotalBorrowAssets.push(data.total_BorrowAssets)
+        })
+    },
+    "error": function (e) {
+        console.log(e);
+    }
+})
+
+
+
 // Bar Chart Example
 var ctx = document.getElementById("myBarChart");
 var myBarChart = new Chart(ctx, {
   type: 'bar',
-  data: {
+    data: {
     labels: ["January", "February", "March", "April", "May"],
     datasets: [{
       label: "Revenue",

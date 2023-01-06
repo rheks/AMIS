@@ -62,6 +62,8 @@ function allEmployees() {
             $("#InputHOD").empty()
             $("#InputHOD").append(`<option value="" selected disabled>Choose the Head of Departement</option>`)
             for (let i = 0; i < obj.length; i++) {
+                console.log(obj[i].firstName + ": " + obj[i].nik)
+                console.log(obj[i].firstName + ": " + obj[i].departements.niK_HoD)
                 if (obj[i].departements.niK_HoD != obj[i].nik) {
                     $("#InputHOD").append(`<option value="${obj[i].nik}">${obj[i].firstName} ${obj[i].lastName}</option>`)
                 }
@@ -76,6 +78,8 @@ function allEmployees() {
 }
 
 $("#ModalCreate").click(() => {
+    allEmployees()
+
     $("#buttonSubmit").attr("onclick", "Create()");
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
@@ -121,6 +125,7 @@ function Create() {
                         title: 'Success',
                         text: 'Data successfully created',
                     })
+                    allEmployees()
                     $('#DepartementsTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 } else {

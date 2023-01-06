@@ -33,7 +33,7 @@ $(document).ready(function () {
         "success": function (result) {
             var obj = result.data;
             let TotalBorrow = 0;
-            console.log(obj)
+            //console.log(obj)
             obj.forEach((data, index, arr) => {
                 TotalBorrow += data.quantity
             })

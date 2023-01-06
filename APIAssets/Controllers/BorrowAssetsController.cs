@@ -60,6 +60,46 @@ namespace APIAssets.Controllers
             }
         }
         
+        [HttpGet]
+        [Route("Request/MostFrequentlyBorrowAssets")]
+        public ActionResult MostFrequentlyBorrowAssets()
+        {
+            var response = borrowAssetsRepository.MostFrequentlyBorrowAssets();
+
+            if (response.Count() >= 1)
+            {
+                return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data Most Frequently Borrow Assets found", Data = response });
+            }
+            else if (response.Count() == 0)
+            {
+                return StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Data Most Frequently Borrow Assets not found", Data = response });
+            }
+            else
+            {
+                return StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response });
+            }
+        }
+        
+        [HttpGet]
+        [Route("Request/EmployeesMostFrequentlyBorrowAssets")]
+        public ActionResult EmployeesMostFrequentlyBorrowAssets()
+        {
+            var response = borrowAssetsRepository.EmployeesMostFrequentlyBorrowAssets();
+
+            if (response.Count() >= 1)
+            {
+                return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data Employees Most Frequently Borrow Assets found", Data = response });
+            }
+            else if (response.Count() == 0)
+            {
+                return StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Data Employees Most Frequently Borrow Assets not found", Data = response });
+            }
+            else
+            {
+                return StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response });
+            }
+        }
+        
         [HttpPost]
         [Route("Request")]
         //[Authorize]
