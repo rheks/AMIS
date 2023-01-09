@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
+using System.Net;
 
 namespace APIAssets.Repositories.Data
 {
@@ -35,6 +37,53 @@ namespace APIAssets.Repositories.Data
             }
 
             return new String(stringChars);
+        }
+
+        public static void sendEmail(string toEmail, string NIK, string Name, string generatePassword)
+        {
+            string fromEmail = "andre.ktsr9@gmail.com";
+            string fromPassword = "umzunoyxgyhqaiql";
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(fromEmail);
+            message.Subject = "Admin Berca Assets Manageement";
+            message.To.Add(new MailAddress(toEmail));
+            message.Body = $"<html>" +
+                $"\r\n<body width=\"100%\" style=\"margin: 0; padding: 0 !important; background: #f3f3f5; mso-line-height-rule: exactly;\">\r\n" +
+                $"<center style=\"width: 100%; background: #f3f3f5;\">\r\n" +
+                $"<div class=\"email-container\" style=\"max-width: 680px; margin: 0 auto;\">\r\n" +
+                $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"max-width: 680px; width:100%\">\r\n" +
+                $"<tr>\r\n" +
+                $"<td style=\"padding: 30px; background-color: #ffffff;\" class=\"sm-p bar\">\r\n" +
+                $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"width:100%;\">\r\n" +
+                $"<tr>\r\n" +
+                $"<td style=\"padding-bottom: 15px; font-family: arial, sans-serif; font-size: 15px; line-height: 21px; color: #3C3F44; text-align: left;\">\r\n" +
+                $"<h1 style=\"font-weight: bold; font-size: 21px; line-height: 27px; color: #0C0D0E; margin: 0 0 15px 0;\">Hello, {Name}</h1>\r\n" +
+                $"<p style=\"margin: 0 0 15px;\" class=\"has-markdown\">Congratulations, your account has been created by the Berca Asset Management admin. Please enter the website with the account data below.</p>\r\n" +
+                $"<ul style=\"padding: 0; margin: 0; list-style-type: disc;\">\r\n" +
+                $"<li style=\"margin:0 0 10px 30px;\">NIK : <b>{NIK}</b></li>\r\n" +
+                $"<li style=\"margin:0 0 10px 30px;\">Password : <b>{generatePassword}</b></li>\r\n" +
+                $"</ul>\r\n" +
+                $"</td>\r\n" +
+                $"</tr>\r\n" +
+                $"</table>\r\n" +
+                $"</td>\r\n" +
+                $"</tr>\r\n" +
+                $"</table>\r\n" +
+                $"</div>\r\n" +
+                $"</center>\r\n" +
+                $"</body>\r\n" +
+                $"</html>";
+            message.IsBodyHtml = true;
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(fromEmail, fromPassword),
+                EnableSsl = true,
+            };
+
+            smtpClient.Send(message);
         }
 
         public string GenerateNIK()
@@ -86,12 +135,14 @@ namespace APIAssets.Repositories.Data
             appDbContext.Add(empl);
             appDbContext.SaveChanges();
 
+            var generatePassword = RandomString(10);
             var user = new User();
             user.NIK = empl.NIK;
-            user.Password = BC.HashPassword(registerEmployee.Password);
-            //user.Password = BC.HashPassword(registerEmployee.BirthOfDate.ToString());
+            user.Password = BC.HashPassword(generatePassword);
             appDbContext.Add(user);
             var response = appDbContext.SaveChanges();
+
+            sendEmail(registerEmployee.Email, newNIK, registerEmployee.FirstName, generatePassword);
             return response;
         }
 
