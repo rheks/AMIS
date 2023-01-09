@@ -23,6 +23,20 @@ namespace APIAssets.Repositories.Data
             //this.appSettings = appSettings;
         }
 
+        public static string RandomString(int length)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[length];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new String(stringChars);
+        }
+
         public string GenerateNIK()
         {
             var lastNIK = "";
@@ -74,7 +88,8 @@ namespace APIAssets.Repositories.Data
 
             var user = new User();
             user.NIK = empl.NIK;
-            user.Password= BC.HashPassword(registerEmployee.Password);
+            user.Password = BC.HashPassword(registerEmployee.Password);
+            //user.Password = BC.HashPassword(registerEmployee.BirthOfDate.ToString());
             appDbContext.Add(user);
             var response = appDbContext.SaveChanges();
             return response;

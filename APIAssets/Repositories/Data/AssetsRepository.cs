@@ -1,5 +1,7 @@
 ﻿using APIAssets.Context;
 using APIAssets.Models;
+using APIAssets.ViewModels;
+using System.Linq;
 
 namespace APIAssets.Repositories.Data
 {
@@ -7,7 +9,7 @@ namespace APIAssets.Repositories.Data
     {
         public AssetsRepository(AppDbContext appDbContext) : base(appDbContext)
         {
-
+            
         }
     }
 }

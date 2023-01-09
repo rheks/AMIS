@@ -215,5 +215,21 @@ namespace WebAssets.Controllers
             }
             return View();
         }
+        
+        public IActionResult Profile()
+        {
+            if (
+                HttpContext.Session.GetString("NIK") == null ||
+                HttpContext.Session.GetString("Name") == null ||
+                HttpContext.Session.GetString("Role") == null
+            )
+            {
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+            ViewBag.nik = HttpContext.Session.GetString("NIK");
+            ViewBag.name = HttpContext.Session.GetString("Name");
+            ViewBag.role = HttpContext.Session.GetString("Role");
+            return View();
+        }
     }
 }

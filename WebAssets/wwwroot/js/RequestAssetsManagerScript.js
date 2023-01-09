@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $('#RequestAssetsManagerTable').DataTable({
         "ajax": {
-            "url": urlBackend + "/borrowassets",
+            "url": urlBackend + "/borrowassets/request/pending",
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
@@ -89,6 +89,134 @@ $(document).ready(function () {
             "emptyTable": "no data found"
         },
         "width": "100%"
+    });
+
+    $('#BorrowAssets2Table').DataTable({
+        "ajax": {
+            "url": urlBackend + "/borrowassets/request/3",
+            "type": "GET",
+            "datatype": "json",
+            "dataSrc": "data",
+            "error": (e) => {
+                document.querySelector("#BorrowAssetsTable > tbody > tr > td").innerHTML = "Data Not Available";
+            },
+        },
+        "columns": [
+            {
+                "data": null,
+                "className": "text-center",
+                "render": function (data, type, full, meta) {
+                    return meta.row + 1;
+                    return "";
+                }, "width": "1%"
+            },
+            {
+                "data": "users.employee",
+                "render": function (data) {
+                    return `${data.firstName} ${data.lastName}`
+                }
+            },
+            { "data": "assets.name" },
+            {
+                "data": "quantity",
+                "className": "text-center"
+            },
+            {
+                "data": "borrowing_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "return_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "status",
+                "className": "text-center",
+                "render": function (data) {
+                    if (data == "0") {
+                        return '<p class="btn btn-warning" style="background-color: #FFB100;">Pending</p>'
+                    } else if (data == "1") {
+                        return '<p class="btn btn-info">Pending</p>'
+                    } else if (data == "2") {
+                        return '<p class="btn btn-primary" style="background-color: #205295;">Pending</p>'
+                    } else if (data == "3") {
+                        return '<p class="btn btn-success">Accepted</p>'
+                    } else if (data == "4") {
+                        return '<p class="btn btn-danger">Rejected</p>'
+                    }
+                }, "width": "10%"
+            },
+        ], "width": "100%"
+    });
+
+    $('#BorrowAssets3Table').DataTable({
+        "ajax": {
+            "url": urlBackend + "/borrowassets/request/4",
+            "type": "GET",
+            "datatype": "json",
+            "dataSrc": "data",
+            "error": (e) => {
+                document.querySelector("#BorrowAssetsTable > tbody > tr > td").innerHTML = "Data Not Available";
+            },
+        },
+        "columns": [
+            {
+                "data": null,
+                "className": "text-center",
+                "render": function (data, type, full, meta) {
+                    return meta.row + 1;
+                    return "";
+                }, "width": "1%"
+            },
+            {
+                "data": "users.employee",
+                "render": function (data) {
+                    return `${data.firstName} ${data.lastName}`
+                }
+            },
+            { "data": "assets.name" },
+            {
+                "data": "quantity",
+                "className": "text-center"
+            },
+            {
+                "data": "borrowing_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "return_Time",
+                "className": "text-center",
+                "render": function (data) {
+                    return `${data.slice(0, 10)}`
+                }
+            },
+            {
+                "data": "status",
+                "className": "text-center",
+                "render": function (data) {
+                    if (data == "0") {
+                        return '<p class="btn btn-warning" style="background-color: #FFB100;">Pending</p>'
+                    } else if (data == "1") {
+                        return '<p class="btn btn-info">Pending</p>'
+                    } else if (data == "2") {
+                        return '<p class="btn btn-primary" style="background-color: #205295;">Pending</p>'
+                    } else if (data == "3") {
+                        return '<p class="btn btn-success">Accepted</p>'
+                    } else if (data == "4") {
+                        return '<p class="btn btn-danger">Rejected</p>'
+                    }
+                }
+            },
+        ], "width": "100%"
     });
 
     $.ajax({
@@ -200,6 +328,8 @@ function Create() {
                         text: 'Data successfully created',
                     })
                     $('#RequestAssetsManagerTable').DataTable().ajax.reload();
+                    $('#BorrowAssets2Table').DataTable().ajax.reload();
+                    $('#BorrowAssets3Table').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 } else {
                     alert("Data failed to create")
@@ -310,6 +440,8 @@ function Update() {
                         text: 'Data successfully updated',
                     })
                     $('#RequestAssetsManagerTable').DataTable().ajax.reload();
+                    $('#BorrowAssets2Table').DataTable().ajax.reload();
+                    $('#BorrowAssets3Table').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 }
                 else {
@@ -396,6 +528,8 @@ function Delete() {
                     text: 'Data successfully deleted',
                 })
                 $('#RequestAssetsManagerTable').DataTable().ajax.reload();
+                $('#BorrowAssets2Table').DataTable().ajax.reload();
+                $('#BorrowAssets3Table').DataTable().ajax.reload();
             }
         },
         "error": (result) => {

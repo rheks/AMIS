@@ -13,6 +13,7 @@
             <h6 class="m-0 font-weight-bold text-primary">List of Borrow Assets</h6>
         </div>
         <br />
+
         <div class="col-6 ml-2">
             <button type="button" class="btn btn-success" id="ModalCreate" data-toggle="modal" data-target="#CreateModal">
                 Create New Borrow Asset
@@ -22,7 +23,7 @@
 
         <div class="card-body">
 
-            <ul id="myTab" class="nav nav-tabs" role="tablist">
+            <ul id="myTab" class="nav nav-tabs nav-fill mb-3" role="tablist">
                 <li class="nav-item"><a class="nav-link active" href="#tab-1" data-target=".etab-p1, .etabi-img1" data-toggle="tab">Pending</a></li>
                 <li class="nav-item"><a class="nav-link" href="#tab-2" data-target=".etab-p2, .etabi-img2" data-toggle="tab">Accepted</a></li>
                 <li class="nav-item"><a class="nav-link" href="#tab-3" data-target=".etab-p3, .etabi-img3" data-toggle="tab">Rejected</a></li>
@@ -31,7 +32,7 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active etab-p1 ml-1">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="BorrowAssetsTable" width="100%" cellspacing="0">
+                        <table class="table align-middle mb-0 bg-white" id="BorrowAssetsTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th class="text-center">No.</th>
@@ -49,7 +50,7 @@
                 </div>
                 <div class="tab-pane fade etab-p2 ml-1">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="BorrowAssets2Table" width="100%" cellspacing="0">
+                        <table class="table align-middle mb-0 bg-white" id="BorrowAssets2Table" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th class="text-center">No.</th>
@@ -59,6 +60,7 @@
                                     <th>Borrow Date</th>
                                     <th>Return Date</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -66,7 +68,7 @@
                 </div>
                 <div class="tab-pane fade etab-p3 ml-1">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="BorrowAssets3Table" width="100%" cellspacing="0">
+                        <table class="table align-middle mb-0 bg-white" id="BorrowAssets3Table" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th class="text-center">No.</th>
@@ -76,6 +78,7 @@
                                     <th>Borrow Date</th>
                                     <th>Return Date</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>

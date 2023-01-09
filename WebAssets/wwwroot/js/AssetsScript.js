@@ -27,7 +27,10 @@ $(document).ready(function () {
                 }, "width": "1%"
             },
             { "data": "name" },
-            { "data": "stock" },
+            {
+                "data": "stock",
+                "className": "text-center"
+            },
             {
                 "data": "id",
                 "className": "text-center",

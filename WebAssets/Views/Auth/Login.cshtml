@@ -9,9 +9,9 @@
     <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
-            <div class="col-lg-6 d-none d-lg-block bg-login-image">
-            </div>
-            <img src="~/img/bg-login-3.jpg" class="col-lg-6 img-fluid d-none d-lg-block" />
+            @*<div class="col-lg-6 d-none d-lg-block">
+            </div>*@
+            @*<img src="~/img/bg-login-3.jpg" class="col-lg-6 img-fluid d-none d-lg-block" />
             <div class="col-lg-6">
                 <div class="p-5">
                     <div class="text-center">
@@ -62,8 +62,7 @@
                 <div class="card" style="border-radius: 1rem;">
                     <div class="row g-0">
                         <div class="col-md-6 col-lg-5 d-none d-md-block mt-5">
-                            <img src="~/img/robot.jpg"
-                                 alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                            <img src="~/img/robot.jpg" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
@@ -75,18 +74,23 @@
                                         </a>
                                     </div>
 
-                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
-                                    <div>
-                                        <h5 class="text-danger">@ViewBag.Message</h5>
+                                    <h5 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;">Sign into your account</h5>
+                                    @if (@ViewBag.Message != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            @ViewBag.Message
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="NIK" type="text" id="form2Example17" class="form-control form-control-lg" placeholder="NIK" required />
+
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input asp-for="NIK" type="text" id="form2Example17" class="form-control form-control-lg" placeholder="NIK" />
-
-                                    </div>
-
-                                    <div class="form-outline mb-4">
-                                        <input asp-for=" Password" type="password" id="form2Example27" class="form-control form-control-lg" placeholder="Password" />
+                                        <input asp-for="Password" type="password" id="form2Example27" class="form-control form-control-lg" placeholder="Password" required />
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                     </div>
 
@@ -95,15 +99,15 @@
                                     </div>
 
                                     @*<a class="small text-muted" href="#!">Forgot password?</a>
-                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">
-                                                Don't have an account? <a href="#!"
-                                         style="color: #393f81;">Register here</a>
-                                        </p>*@
+                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">
+                                    Don't have an account? <a href="#!"
+                                    style="color: #393f81;">Register here</a>
+                                    </p>*@
                                     @*<a href="#!" class="small text-muted">Terms of use.</a>
-                                        <a href="#!" class="small text-muted">Privacy policy</a>*@
-                                <div class="container">
-                                    &copy; WebAssets 2022
-                                </div>
+                                    <a href="#!" class="small text-muted">Privacy policy</a>*@
+                                    <div class="container">
+                                        &copy; Berca Assets Management 2023
+                                    </div>
                                 </form>
                             </div>
                         </div>

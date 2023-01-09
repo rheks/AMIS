@@ -9,6 +9,9 @@ $(document).ready(function () {
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
+            "error": (e) => {
+                document.querySelector("#EmployeesTable > tbody > tr > td").innerHTML = "Data Not Available";
+            },
         },
         "columns": [
             {
@@ -133,8 +136,7 @@ function Create() {
         $("#InputEmail").val() == "" ||
         $("#InputPhone").val() == "" ||
         $("#InputRole").val() == "" ||
-        $("#InputDepartement").val() == "" ||
-        $("#InputPassword").val() == ""
+        $("#InputDepartement").val() == ""
     ) {
         Swal.fire({
             icon: 'error',
@@ -170,7 +172,6 @@ function Create() {
         Employee.Address = $("#InputAddress").val();
         Employee.Email = $("#InputEmail").val();
         Employee.Phone = $("#InputPhone").val();
-        Employee.Password = $("#InputPassword").val();
         Employee.Role_Id = parseInt($("#InputRole").val());
         Employee.Departement_Id = parseInt($("#InputDepartement").val());
 
@@ -297,7 +298,6 @@ function Update() {
         Employee.Address = $("#InputAddress").val();
         Employee.Email = $("#InputEmail").val();
         Employee.Phone = $("#InputPhone").val();
-        Employee.Password = $("#InputPassword").val();
         Employee.Role_Id = parseInt($("#InputRole").val());
         Employee.Departement_Id = parseInt($("#InputDepartement").val());
     

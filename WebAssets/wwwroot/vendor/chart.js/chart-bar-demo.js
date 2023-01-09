@@ -20,9 +20,9 @@ $.ajax({
         })
 
         if (maxFrequency % 2 != 0) {
-            maxFrequency += 7
+            maxFrequency += 1
         } else {
-            maxFrequency += 8
+            maxFrequency += 2
         }
     },
     "async": false,
