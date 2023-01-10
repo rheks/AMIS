@@ -130,7 +130,7 @@ function Create() {
 
         $.ajax({
             "type": "POST",
-            "url": urlBackend + "/borrowassets/request",
+            "url": urlBackend + "/borrowassets",
             "data": JSON.stringify(BorrowAsset),
             "contentType": "application/json;charset=utf-8",
             "success": (result) => {

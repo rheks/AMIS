@@ -247,7 +247,7 @@ $(document).ready(function () {
             var obj = result.data
             $("#InputAsset").append(`<option value="" selected disabled>Choose The Assets</option>`)
             for (let i = 0; i < obj.length; i++) {
-                $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name}</option>`)
+                $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name} (${obj.stock})</option>`)
             }
         },
         "error": (e) => {
@@ -428,7 +428,7 @@ function Update() {
         console.log(BorrowAsset)
 
         $.ajax({
-            "url": urlBackend + "/borrowassets",
+            "url": urlBackend + "/borrowassets/request",
             "type": "PUT",
             "data": JSON.stringify(BorrowAsset),
             "contentType": "application/json; charset=utf-8",

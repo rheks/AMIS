@@ -428,7 +428,7 @@ function Update() {
         console.log(BorrowAsset)
 
         $.ajax({
-            "url": urlBackend + "/borrowassets",
+            "url": urlBackend + "/borrowassets/request",
             "type": "PUT",
             "data": JSON.stringify(BorrowAsset),
             "contentType": "application/json; charset=utf-8",

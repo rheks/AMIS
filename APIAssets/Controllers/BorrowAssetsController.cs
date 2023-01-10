@@ -102,10 +102,9 @@ namespace APIAssets.Controllers
         
         [HttpPost]
         [Route("Request")]
-        //[Authorize]
-        public ActionResult RequestAsset(BorrowAsset borrowAsset)
+        public ActionResult CreateRequestAsset(BorrowAsset borrowAsset)
         {
-            var response = borrowAssetsRepository.RequestAsset(borrowAsset);
+            var response = borrowAssetsRepository.CreateRequestAsset(borrowAsset);
 
             if (response == 1)
             {
@@ -121,6 +120,26 @@ namespace APIAssets.Controllers
             }
         }
         
+        [HttpPut]
+        [Route("Request")]
+        public ActionResult UpdateRequestAsset(BorrowAsset borrowAsset)
+        {
+            var response = borrowAssetsRepository.UpdateRequestAsset(borrowAsset);
+
+            if (response == 1)
+            {
+                return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Request asset successfully updated", Data = response });
+            }
+            else if (response == 0)
+            {
+                return StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Request asset failed to update", Data = response });
+            }
+            else
+            {
+                return StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response });
+            }
+        }
+
         [HttpDelete]
         [Route("Request")]
         public ActionResult ReturnAsset(BorrowAsset borrowAsset)

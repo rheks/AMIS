@@ -128,24 +128,7 @@
         }
     })
 
-    $.ajax({
-        "url": urlBackend + "/assets",
-        "type": "GET",
-        "datatype": "json",
-        "dataSrc": "data",
-        "contentType": "application/json;charset=utf-8",
-        "success": (result) => {
-            var obj = result.data
-            $("#InputAsset").append(`<option value="" selected disabled>Choose The Assets</option>`)
-            for (let i = 0; i < obj.length; i++) {
-                $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name}</option>`)
-            }
-        },
-        "error": (e) => {
-            alert(e.responseText)
-        }
-    })
-
+    showAssets()
 
     $('#BorrowAssets2Table').DataTable({
         "ajax": {
@@ -303,6 +286,27 @@
 
 });
 
+function showAssets() {
+    $.ajax({
+        "url": urlBackend + "/assets",
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": "data",
+        "contentType": "application/json;charset=utf-8",
+        "success": (result) => {
+            var obj = result.data
+            $("#InputAsset").empty()
+            $("#InputAsset").append(`<option value="" selected disabled>Choose The Assets</option>`)
+            for (let i = 0; i < obj.length; i++) {
+                $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name} (${obj[i].stock})</option>`)
+            }
+        },
+        "error": (e) => {
+            alert(e.responseText)
+        }
+    })
+}
+
 
 $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
@@ -336,6 +340,7 @@ function Create() {
         $("#InputEmployee").val() == "" ||
         $("#InputAsset").val() == "" ||
         $("#InputQuantity").val() == "" ||
+        $("#InputReason").val() == "" ||
         $("#InputBorrowDate").val() == "" ||
         $("#InputReturnDate").val() == ""
     ) {
@@ -375,6 +380,8 @@ function Create() {
                     $('#BorrowAssetsTable').DataTable().ajax.reload();
                     $('#BorrowAssets2Table').DataTable().ajax.reload();
                     $('#BorrowAssets3Table').DataTable().ajax.reload();
+
+                    showAssets()
                     $('#CreateModal').modal("hide");
                 } else {
                     alert("Data failed to create")
@@ -463,8 +470,8 @@ function Update() {
         BorrowAsset.Id = $("#InputIdBorrowAsset").val();
         BorrowAsset.NIK = $("#InputEmployee").val();
         BorrowAsset.Asset_Id = $("#InputAsset").val();
-        BorrowAsset.Quantity = $("#InputQuantity").val();
         BorrowAsset.Status = $("#InputStatus").val();
+        BorrowAsset.Quantity = parseInt($("#InputQuantity").val());
         BorrowAsset.Reason = $("#InputReason").val();
         BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
         BorrowAsset.Return_Time = $("#InputReturnDate").val();
@@ -472,7 +479,7 @@ function Update() {
         console.log(BorrowAsset)
 
         $.ajax({
-            "url": urlBackend + "/borrowassets",
+            "url": urlBackend + "/borrowassets/request",
             "type": "PUT",
             "data": JSON.stringify(BorrowAsset),
             "contentType": "application/json; charset=utf-8",
@@ -486,6 +493,7 @@ function Update() {
                     $('#BorrowAssetsTable').DataTable().ajax.reload();
                     $('#BorrowAssets2Table').DataTable().ajax.reload();
                     $('#BorrowAssets3Table').DataTable().ajax.reload();
+                    showAssets()
                     $('#CreateModal').modal("hide");
                 }
                 else {
@@ -516,7 +524,6 @@ function ConfirmDelete(id) {
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
             var obj = result.data;
-
             $('#InputIdBorrowAsset').val(obj.id);
             $('#InputEmployee').val(obj.nik);
             $('#InputAsset').val(obj.asset_Id);
@@ -526,7 +533,7 @@ function ConfirmDelete(id) {
             $('#InputBorrowDate').val(obj.borrowing_Time.slice(0, 10));
             $('#InputReturnDate').val(obj.return_Time.slice(0, 10));
 
-            console.log($('#InputIdBorrowAsset').val())
+            console.log(obj)
 
             Swal.fire({
                 title: 'Delete data',
@@ -558,6 +565,8 @@ function Delete() {
     BorrowAsset.Borrowing_Time = $("#InputBorrowDate").val();
     BorrowAsset.Return_Time = $("#InputReturnDate").val();
 
+    console.log(BorrowAsset)
+
     $.ajax({
         "url": urlBackend + "/borrowassets/request",
         "type": "DELETE",
@@ -574,6 +583,7 @@ function Delete() {
                 $('#BorrowAssetsTable').DataTable().ajax.reload();
                 $('#BorrowAssets2Table').DataTable().ajax.reload();
                 $('#BorrowAssets3Table').DataTable().ajax.reload();
+                showAssets()
             }
         },
         "error": (result) => {

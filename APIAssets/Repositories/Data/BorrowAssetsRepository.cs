@@ -76,12 +76,40 @@ namespace APIAssets.Repositories.Data
             }
         }
 
-        public int RequestAsset(BorrowAsset borrowAsset)
+        public int UpdateRequestAsset(BorrowAsset borrowAsset)
         {
             Asset assets = appDbContext.Assets.SingleOrDefault(a => a.Id == borrowAsset.Asset_Id);
-            assets.Stock = assets.Stock - borrowAsset.Quantity;
-            appDbContext.Entry(assets).State = EntityState.Modified;
-            appDbContext.SaveChanges();
+            if (borrowAsset.Status == 4)
+            {
+                assets.Stock = assets.Stock + borrowAsset.Quantity;
+                appDbContext.Entry(assets).State = EntityState.Modified;
+                appDbContext.SaveChanges();
+            } 
+
+            BorrowAsset BA = appDbContext.BorrowAssets.SingleOrDefault(b => b.Id == borrowAsset.Id);
+            BA.NIK = borrowAsset.NIK;
+            BA.Asset_Id = borrowAsset.Asset_Id;
+            BA.Quantity = borrowAsset.Quantity;
+            BA.Status = borrowAsset.Status;
+            BA.Reason = borrowAsset.Reason;
+            BA.Borrowing_Time = borrowAsset.Borrowing_Time;
+            BA.Return_Time = borrowAsset.Return_Time;
+
+            appDbContext.Entry(BA).State = EntityState.Modified;
+            var response = appDbContext.SaveChanges();
+
+            return response;
+        }
+        
+        public int CreateRequestAsset(BorrowAsset borrowAsset)
+        {
+            Asset assets = appDbContext.Assets.SingleOrDefault(a => a.Id == borrowAsset.Asset_Id);
+            if (borrowAsset.Status != 4)
+            {
+                assets.Stock = assets.Stock - borrowAsset.Quantity;
+                appDbContext.Entry(assets).State = EntityState.Modified;
+                appDbContext.SaveChanges();
+            }
 
             var BA = new BorrowAsset();
             BA.NIK = borrowAsset.NIK;
@@ -101,9 +129,12 @@ namespace APIAssets.Repositories.Data
         public int ReturnAsset(BorrowAsset borrowAsset)
         {
             Asset assets = appDbContext.Assets.SingleOrDefault(a => a.Id == borrowAsset.Asset_Id);
-            assets.Stock = assets.Stock + borrowAsset.Quantity;
-            appDbContext.Entry(assets).State = EntityState.Modified;
-            appDbContext.SaveChanges();
+            if (borrowAsset.Status != 4)
+            {
+                assets.Stock = assets.Stock + borrowAsset.Quantity;
+                appDbContext.Entry(assets).State = EntityState.Modified;
+                appDbContext.SaveChanges();
+            }
 
             appDbContext.Remove(appDbContext.BorrowAssets.Find(borrowAsset.Id));
             var response = appDbContext.SaveChanges();
