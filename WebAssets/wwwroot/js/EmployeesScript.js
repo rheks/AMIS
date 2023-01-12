@@ -112,8 +112,10 @@ $("#ModalCreate").click(() => {
     $("#InputPhone").val("");
     $("#InputEmail").val("");
     $("#InputPassword").val("");
-    $("#InputRole").val("");
     $("#InputDepartement").val("");
+
+    $("#InputRole").val("");
+    $("#InputRole").attr("disabled", "disabled");
 
     $("#InputFirstName").attr("placeholder", "Input First Name");
     $("#InputLastName").attr("placeholder", "Input Last Name");
@@ -121,6 +123,40 @@ $("#ModalCreate").click(() => {
     $("#InputPhone").attr("placeholder", "Input Phone Number");
     $("#InputEmail").attr("placeholder", "Input Email");
     $("#InputPassword").attr("placeholder", "Input Password");
+})
+
+$("#InputDepartement").change(() => {
+    $("#InputRole").val("");
+    $("#InputRole").removeAttr("disabled");
+    if ($("#InputDepartement option:selected").val() == 1) {
+        $("#InputRole > option:nth-child(2)").show()
+        $("#InputRole > option:nth-child(3)").show()
+        $("#InputRole > option:nth-child(5)").show()
+
+        $("#InputRole > option:nth-child(4)").hide()
+    } else {
+        $("#InputRole > option:nth-child(2)").hide()
+        $("#InputRole > option:nth-child(3)").show()
+        $("#InputRole > option:nth-child(5)").hide()
+
+        $("#InputRole > option:nth-child(4)").show()
+    }
+
+    fetch(urlBackend + "/departements/" + $("#InputDepartement option:selected").val())
+        .then(function (response) {
+            // response is a json string
+            return response.json();// convert it to a pure JavaScript object
+        })
+        .then(function (result) {
+            //Process Your data  
+            if (result.data.niK_HoD != null) {
+                $("#InputRole > option:nth-child(4)").hide()
+                $("#InputRole > option:nth-child(5)").hide()
+            }
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 })
 
 function Create() {
@@ -211,6 +247,9 @@ function Create() {
 }
 
 function GetById(id) {
+    //$("#InputRole").empty();
+    $("#InputRole").removeAttr("disabled");
+
     // debugger;
     $.ajax({
         "type": "GET",
@@ -231,10 +270,40 @@ function GetById(id) {
             $('#InputAddress').val(obj.address);
             $('#InputPhone').val(obj.phone);
             $('#InputEmail').val(obj.email);
-            $('#InputRole').val(obj.role_Id);
             $('#InputDepartement').val(obj.departement_Id);
+            $('#InputRole').val(obj.role_Id)
 
-            $("#BodyModal > form > div:nth-child(6)").hide()
+            $("#InputRole").removeAttr("disabled");
+            if ($("#InputDepartement option:selected").val() == 1) {
+                $("#InputRole > option:nth-child(2)").show()
+                $("#InputRole > option:nth-child(3)").show()
+                $("#InputRole > option:nth-child(5)").show()
+
+                $("#InputRole > option:nth-child(4)").hide()
+            } else {
+                $("#InputRole > option:nth-child(2)").hide()
+                $("#InputRole > option:nth-child(3)").show()
+                $("#InputRole > option:nth-child(5)").hide()
+
+                $("#InputRole > option:nth-child(4)").show()
+            }
+
+            fetch(urlBackend + "/departements/" + obj.departement_Id)
+                .then(function (response) {
+                    // response is a json string
+                    return response.json();// convert it to a pure JavaScript object
+                })
+                .then(function (result) {
+                    //Process Your data  
+                    if (result.data.niK_HoD != null) {
+                        $("#InputRole > option:nth-child(4)").hide()
+                        $("#InputRole > option:nth-child(5)").hide()
+                    }
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");
@@ -304,7 +373,7 @@ function Update() {
         console.log(Employee)
     
         $.ajax({
-            "url": urlBackend + "/employees",
+            "url": urlBackend + "/employees/register/update",
             "type": "PUT",
             "data": JSON.stringify(Employee),
             "contentType": "application/json; charset=utf-8",

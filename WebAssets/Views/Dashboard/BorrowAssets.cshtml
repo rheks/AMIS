@@ -106,21 +106,17 @@
             <div class="modal-body" id="BodyModal">
                 <form method="post">
                     <input type="number" class="form-control" name="IdBorrowAssets" id="InputIdBorrowAsset" hidden>
+                    <input type="number" class="form-control" name="nik" id="InputEmployee" value="@ViewBag.NIK" hidden>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="InputEmployee">Employee</label>
-                            <select class="form-control" id="InputEmployee" name="employee">
-                            </select>
-                        </div>
                         <div class="form-group col-md-6">
                             <label for="InputAsset">Asset</label>
                             <select class="form-control" id="InputAsset" name="asset">
                             </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputQuantity">Quantity</label>
-                        <input type="number" class="form-control" name="quantity" id="InputQuantity" >
+                        <div class="form-group col-md-6">
+                            <label for="InputQuantity">Quantity</label>
+                            <input type="number" class="form-control" name="quantity" id="InputQuantity">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="InputReason">Reason</label>

@@ -88,6 +88,8 @@ $("#ModalCreate").click(() => {
     $("#InputDepartementName").val("");
     $("#InputHOD").val("");
 
+
+    $("#BodyModal > form > div:nth-child(3)").hide()
     $("#InputDepartementName").attr("placeholder", "Input Departement Name");
 })
 
@@ -164,6 +166,7 @@ function GetById(id) {
             $('#InputDepartementName').val(obj.name);
             $('#InputHOD').val(obj.niK_HoD);
 
+            $("#BodyModal > form > div:nth-child(3)").hide()
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");

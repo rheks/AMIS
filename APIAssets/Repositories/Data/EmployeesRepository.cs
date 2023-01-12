@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace APIAssets.Repositories.Data
 {
@@ -46,7 +47,7 @@ namespace APIAssets.Repositories.Data
 
             MailMessage message = new MailMessage();
             message.From = new MailAddress(fromEmail);
-            message.Subject = "Admin Berca Assets Manageement";
+            message.Subject = "New Employee | Berca Assets Manageement";
             message.To.Add(new MailAddress(toEmail));
             message.Body = $"<html>" +
                 $"\r\n<body width=\"100%\" style=\"margin: 0; padding: 0 !important; background: #f3f3f5; mso-line-height-rule: exactly;\">\r\n" +
@@ -123,30 +124,83 @@ namespace APIAssets.Repositories.Data
 
             var empl = new Employee();
             empl.NIK = newNIK;
-            empl.FirstName= registerEmployee.FirstName;
-            empl.LastName= registerEmployee.LastName;
+            empl.FirstName = registerEmployee.FirstName;
+            empl.LastName = registerEmployee.LastName;
             empl.BirthOfDate = registerEmployee.BirthOfDate;
             empl.Gender = (Models.Gender)registerEmployee.Gender;
             empl.Address = registerEmployee.Address;
-            empl.Phone= registerEmployee.Phone;
-            empl.Email= registerEmployee.Email;
+            empl.Phone = registerEmployee.Phone;
+            empl.Email = registerEmployee.Email;
             empl.Role_Id = registerEmployee.Role_Id;
             empl.Departement_Id = registerEmployee.Departement_Id;
             appDbContext.Add(empl);
-            appDbContext.SaveChanges();
+            var response = appDbContext.SaveChanges();
 
             var generatePassword = RandomString(10);
             var user = new User();
             user.NIK = empl.NIK;
             user.Password = BC.HashPassword(generatePassword);
             appDbContext.Add(user);
-            var response = appDbContext.SaveChanges();
+            response = appDbContext.SaveChanges();
+
+
+            Role rolesData = appDbContext.Roles.SingleOrDefault(a => a.Id == registerEmployee.Role_Id);
+            Departement departementData = appDbContext.Departements.SingleOrDefault(a => a.Id == registerEmployee.Departement_Id);
+            if (rolesData.Name == "Manager" || rolesData.Name == "Manager Asset")
+            {
+                departementData.NIK_HoD = newNIK;
+                appDbContext.Entry(departementData).State = EntityState.Modified;
+                response = appDbContext.SaveChanges();
+            }
 
             sendEmail(registerEmployee.Email, newNIK, registerEmployee.FirstName, generatePassword);
             return response;
         }
+        
+        public int RegisterUpdate(Employee registerEmployee)
+        {
+            Employee oldDataEmployee = appDbContext.Employees.Find(registerEmployee.NIK);
+            Departement departementData = appDbContext.Departements.SingleOrDefault(a => a.Id == oldDataEmployee.Departement_Id);
 
-        //[AllowAnonymous]
+            if (oldDataEmployee.Departement_Id != registerEmployee.Departement_Id)
+            {
+                departementData.NIK_HoD = null;
+                appDbContext.Entry(departementData).State = EntityState.Modified;
+                appDbContext.SaveChanges();
+            }
+
+            oldDataEmployee.FirstName = registerEmployee.FirstName;
+            oldDataEmployee.LastName = registerEmployee.LastName;
+            oldDataEmployee.BirthOfDate = registerEmployee.BirthOfDate;
+            oldDataEmployee.Gender = (Models.Gender)registerEmployee.Gender;
+            oldDataEmployee.Address = registerEmployee.Address;
+            oldDataEmployee.Phone = registerEmployee.Phone;
+            oldDataEmployee.Email = registerEmployee.Email;
+            oldDataEmployee.Role_Id = registerEmployee.Role_Id;
+            oldDataEmployee.Departement_Id = registerEmployee.Departement_Id;
+            appDbContext.Entry(oldDataEmployee).State = EntityState.Modified;
+            var response = appDbContext.SaveChanges();
+
+            Role rolesData = appDbContext.Roles.SingleOrDefault(a => a.Id == registerEmployee.Role_Id);
+            departementData = appDbContext.Departements.SingleOrDefault(a => a.Id == registerEmployee.Departement_Id);
+
+            if ((rolesData.Name != "Manager" && rolesData.Name != "Manager Asset") && departementData.NIK_HoD == registerEmployee.NIK)
+            {
+                departementData.NIK_HoD = null;
+                appDbContext.Entry(departementData).State = EntityState.Modified;
+                response = appDbContext.SaveChanges();
+            }
+
+            if (rolesData.Name == "Manager" || rolesData.Name == "Manager Asset")
+            {
+                departementData.NIK_HoD = registerEmployee.NIK;
+                appDbContext.Entry(departementData).State = EntityState.Modified;
+                response = appDbContext.SaveChanges();
+            }
+
+            return response;
+        }
+
         public LoginEmployee Login([FromBody] LoginEmployee loginEmployee)
         {
             var response = appDbContext.Users.SingleOrDefault(e => e.NIK == loginEmployee.NIK);
@@ -157,12 +211,12 @@ namespace APIAssets.Repositories.Data
 
             // JWT Tokens
             var timeNow = DateTime.Now;
-            
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var secretKey = Encoding.ASCII.GetBytes("aiwjcnoiwnvwpejkv0wejiow4OISENWEJW0J0J249IKF9024UEJ0FU");
             var tokenDiscriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new []
+                Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, response.Employee.FirstName + " " + response.Employee.LastName),
                     new Claim(ClaimTypes.Email, response.Employee.Email),
@@ -188,5 +242,6 @@ namespace APIAssets.Repositories.Data
         {
             return 1;
         }
+
     }
 }

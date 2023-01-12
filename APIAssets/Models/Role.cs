@@ -9,7 +9,7 @@ namespace APIAssets.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ICollection<Employee> Employee { get; set; }
     }
 }

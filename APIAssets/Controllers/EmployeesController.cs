@@ -22,7 +22,6 @@ namespace APIAssets.Controllers
 
         [HttpPost]
         [Route("Register")]
-        //[Authorize]
         public ActionResult Register(RegisterEmployee registerEmployee)
         {
             var response = employeesRepository.Register(registerEmployee);
@@ -30,6 +29,30 @@ namespace APIAssets.Controllers
             if (response == 1)
             {
                 return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data employee successfully registered", Data = response });
+            }
+            else if (response == 2)
+            {
+                return StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Data email is duplicate", Data = response });
+            }
+            else if (response == 3)
+            {
+                return StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Data phone is duplicate", Data = response });
+            }
+            else
+            {
+                return StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response });
+            }
+        }
+        
+        [HttpPut]
+        [Route("Register/Update")]
+        public ActionResult RegisterUpdate(Employee registerEmployee)
+        {
+            var response = employeesRepository.RegisterUpdate(registerEmployee);
+            
+            if (response == 1)
+            {
+                return StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data employee successfully updated", Data = response });
             }
             else if (response == 2)
             {

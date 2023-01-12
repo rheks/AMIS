@@ -237,6 +237,12 @@ $(document).ready(function () {
         }
     })
 
+    showAssets()
+
+});
+
+
+function showAssets() {
     $.ajax({
         "url": urlBackend + "/assets",
         "type": "GET",
@@ -245,17 +251,58 @@ $(document).ready(function () {
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
             var obj = result.data
+            $("#InputAsset").empty()
             $("#InputAsset").append(`<option value="" selected disabled>Choose The Assets</option>`)
             for (let i = 0; i < obj.length; i++) {
-                $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name} (${obj.stock})</option>`)
+                if (obj[i].stock == 0 || obj[i].stock == "0") {
+                    $("#InputAsset").append(`<option value="${obj[i].id}" style="background-color: #eaecf4;" disabled>${obj[i].name} (${obj[i].stock})</option>`)
+                } else {
+                    $("#InputAsset").append(`<option value="${obj[i].id}">${obj[i].name} (${obj[i].stock})</option>`)
+                }
             }
         },
         "error": (e) => {
             alert(e.responseText)
         }
     })
+}
 
-});
+$("#InputAsset").change(() => {
+    let dataAsset = $("#InputAsset option:selected").html().split(" ");
+    let stockAsset = dataAsset[1].slice(1, dataAsset[1].length - 1)
+    console.log();
+    $("#InputQuantity").removeAttr("disabled");
+    $("#InputQuantity").attr({ "max": stockAsset, "min": 1, pattern: "/[^0-9\.]/g" });
+    $("#InputQuantity").val(1)
+})
+
+$("#InputQuantity").on("input", () => {
+    let regex = /^\d+$/
+    let valueQuantity = $("#InputQuantity").val()
+
+    //console.log(valueQuantity)
+
+    if (valueQuantity.indexOf('.') !== -1) {
+        $("#InputQuantity").val(parseInt(valueQuantity))
+        //console.log("Ada titik")
+    } else if (regex.test(valueQuantity)) {
+        $("#InputQuantity").val(valueQuantity)
+        //console.log("Angka")
+    } else {
+        $("#InputQuantity").val("")
+    }
+
+    valueQuantity = parseInt(valueQuantity)
+    let maxInputQuantity = parseInt($("#InputQuantity").attr("max"))
+    let minInputQuantity = parseInt($("#InputQuantity").attr("min"))
+
+    if (valueQuantity > maxInputQuantity) {
+        $("#InputQuantity").val(maxInputQuantity)
+    } else if (valueQuantity < minInputQuantity) {
+        $("#InputQuantity").val(minInputQuantity)
+    }
+})
+
 
 $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
@@ -274,11 +321,21 @@ $("#ModalCreate").click(() => {
     $("#InputIdBorrowAsset").val("");
     $("#InputEmployee").val("");
     $("#InputAsset").val("");
+
     $("#InputQuantity").val("");
+    $("#InputQuantity").attr("placeholder", "Input Quantity");
+    $("#InputQuantity").attr("disabled", "disabled");
+
     $("#InputStatus").val("Accept");
     $('#InputReason').val("");
     $("#InputBorrowDate").val("");
     $("#InputReturnDate").val("");
+
+    let dateNow = new Date($.now());
+    let minDateFormatted = dateNow.getFullYear() + '-' + dateNow.getMonth() + 1 + '-' + dateNow.getDate();
+
+    $("#InputBorrowDate").attr({ "min": minDateFormatted });
+    $("#InputReturnDate").attr({ "min": minDateFormatted });
 
     $("#InputQuantity").attr("placeholder", "Input Quantity");
     $("#InputReason").attr("placeholder", "Input Reason");
@@ -336,6 +393,7 @@ function Create() {
                 }
                 $('#RequestAssetsManagerTable').DataTable().ajax.reload();
                 $('#CreateModal').modal("hide");
+                showAssets()
             },
             "error": (result) => {
                 if (result.status == 400 || result.status == 500) {
@@ -376,9 +434,9 @@ function GetById(id) {
             $('#BodyModal > form > div:nth-child(2)').hide();
             $('#BodyModal > form > div:nth-child(3)').hide();
             $('#BodyModal > form > div:nth-child(4)').hide();
-            $('#BodyModal > form > div:nth-child(5)').hide();
             $('#BodyModal > form > div:nth-child(7)').hide();
 
+            $('#BodyModal > form > div:nth-child(5)').show();
             $('#BodyModal > form > div:nth-child(6)').show();
 
             $("#buttonSubmit").attr("onclick", "Update()");

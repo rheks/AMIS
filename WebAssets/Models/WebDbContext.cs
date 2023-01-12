@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebAssets.ViewModels;
 
 namespace WebAssets.Models
 {
@@ -51,5 +52,7 @@ namespace WebAssets.Models
         {
             optionsBuilder.UseLazyLoadingProxies();
         }
+
+        public DbSet<WebAssets.ViewModels.ResetPasswordVM> ResetPasswordVM { get; set; }
     }
 }
