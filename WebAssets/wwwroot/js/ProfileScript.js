@@ -64,7 +64,7 @@ function Update() {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
-                        text: 'Password successfully updated',
+                        text: 'Password successfully updated, please re-login with your new password',
                     })
                     $("#InputPassword").val("")
                 }

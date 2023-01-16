@@ -18,7 +18,7 @@ namespace APIAssets.Repositories.Data
         {
             var newData = new User();
             newData.NIK = user.NIK;
-            newData.Password = BC.HashPassword(user.Password);
+            newData.PasswordUser = BC.HashPassword(user.Password);
 
             appDbContext.Entry(newData).State = EntityState.Modified;
             var response = appDbContext.SaveChanges();

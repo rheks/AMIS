@@ -13,6 +13,7 @@ namespace APIAssets.Models
         //[JsonIgnore]
         public virtual Employee Employee { get; set; }
         public string Password { get; set; }
+        public string PasswordUser { get; set; }
         [JsonIgnore]
         public virtual ICollection<BorrowAsset> BorrowAssets { get; set; }
     }

@@ -373,14 +373,23 @@ $("#ModalCreate").click(() => {
 
     $("#InputBorrowDate").val("");
     $("#InputReturnDate").val("");
+    $("#InputReturnDate").attr("disabled", "disabled");
 
     let dateNow = new Date($.now());
     let minDateFormatted = dateNow.getFullYear() + '-' + dateNow.getMonth() + 1 + '-' + dateNow.getDate();
 
     $("#InputBorrowDate").attr({ "min": minDateFormatted});
-    $("#InputReturnDate").attr({ "min": minDateFormatted});
 
     $("#BodyModal > form > div:nth-child(5)").hide();    
+})
+
+$("#InputBorrowDate").change(() => {
+    $("#InputReturnDate").removeAttr("disabled");
+    $("#InputReturnDate").val("")
+    let dateBorrow = new Date($("#InputBorrowDate").val());
+    let minDateFormatted = dateBorrow.getFullYear() + '-' + dateBorrow.getMonth() + 1 + '-' + dateBorrow.getDate();
+
+    $("#InputReturnDate").attr({ "min": minDateFormatted });
 })
 
 function Create() {

@@ -41,17 +41,28 @@ namespace WebAssets.Controllers
         public IActionResult Login(User login)
         {
             User userLogin = webDbContext.Users.Find(login.NIK);
-            if (userLogin == null || !BC.Verify(login.Password, userLogin.Password))
+            if (userLogin == null || !BC.Verify(login.Password, userLogin.PasswordUser))
             {
-                ViewBag.Message = "NIK or password is invalid";
+                TempData["Message"] = "NIK or password is invalid";
+                TempData["Status"] = "danger";
                 return View();
             }
             HttpContext.Session.SetString("NIK", userLogin.NIK);
             HttpContext.Session.SetString("Name", userLogin.Employee.FirstName + " " + userLogin.Employee.LastName);
             HttpContext.Session.SetString("Role", userLogin.Employee.Role.Name);
+
+            if (userLogin.Password == userLogin.PasswordUser)
+            {
+                var menuProfile = "<a href=\"Profile\"" +
+                                  "<b>Profile</b>\r\n" +
+                                  "</a>";
+                TempData["Message"] = $"Hello {HttpContext.Session.GetString("Name")}, <b>your password still default</b>. Please change your password immediately on menu {menuProfile}";
+                TempData["Status"] = "warning";
+            }
+
             if (HttpContext.Session.GetString("Role") == "Employee")
             {
-                return RedirectToAction("Index", "Dashboard", new { area = "" });
+                return RedirectToAction("Home", "Dashboard", new { area = "" });
             }
             return RedirectToAction("Index", "Dashboard", new { area = "" });
 
@@ -145,19 +156,21 @@ namespace WebAssets.Controllers
             User employeeReset = webDbContext.Users.Find(reset.NIK);
             if (employeeReset == null)
             {
-                ViewBag.Message = "NIK is invalid";
-                ViewBag.Status = "danger";
+                TempData["Message"] = "NIK is invalid";
+                TempData["Status"] = "danger";
                 return View();
             } else if (employeeReset.Employee.Email != reset.Email)
             {
-                ViewBag.Message = "Email is invalid";
-                ViewBag.Status = "danger";
+                TempData["Message"] = "Email is invalid";
+                TempData["Status"] = "danger";
                 return View();
             }
 
             var generatePassword = RandomPassword(10);
+            var HashPassword = BC.HashPassword(generatePassword);
             employeeReset.NIK = reset.NIK;
-            employeeReset.Password = BC.HashPassword(generatePassword);
+            employeeReset.Password = HashPassword;
+            employeeReset.PasswordUser = HashPassword;
 
             webDbContext.Entry(employeeReset).State = EntityState.Modified;
             var response = webDbContext.SaveChanges();
@@ -166,13 +179,13 @@ namespace WebAssets.Controllers
 
             if (response == 1)
             {
-                ViewBag.Message = "Reset password successful, please check your email";
-                ViewBag.Status = "success";
-                return View();
+                TempData["Message"] = "Reset password successful, Please check your email";
+                TempData["Status"] = "success";
+                return RedirectToAction("Login");
             } else
             {
-                ViewBag.Message = "Reset password failed";
-                ViewBag.Status = "danger";
+                TempData["Message"] = "Reset password failed";
+                TempData["Status"] = "danger";
                 return View();
             }
         }

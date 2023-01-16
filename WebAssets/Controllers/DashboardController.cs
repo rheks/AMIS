@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BC = BCrypt.Net.BCrypt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAssets.Models;
 
 namespace WebAssets.Controllers
 {
     public class DashboardController : Controller
     {
+        private readonly WebDbContext webDbContext;
         public IActionResult Index()
         {
             if (
@@ -27,6 +29,7 @@ namespace WebAssets.Controllers
                     return RedirectToAction("Home");
                 }
             }
+
             return View();
         }
         
@@ -51,6 +54,7 @@ namespace WebAssets.Controllers
                     return RedirectToAction("Index");
                 }
             }
+            
             return View();
         }
         

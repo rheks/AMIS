@@ -137,9 +137,11 @@ namespace APIAssets.Repositories.Data
             var response = appDbContext.SaveChanges();
 
             var generatePassword = RandomString(10);
+            var HashPassword = BC.HashPassword(generatePassword);
             var user = new User();
             user.NIK = empl.NIK;
-            user.Password = BC.HashPassword(generatePassword);
+            user.Password = HashPassword;
+            user.PasswordUser = HashPassword;
             appDbContext.Add(user);
             response = appDbContext.SaveChanges();
 
@@ -204,7 +206,7 @@ namespace APIAssets.Repositories.Data
         public LoginEmployee Login([FromBody] LoginEmployee loginEmployee)
         {
             var response = appDbContext.Users.SingleOrDefault(e => e.NIK == loginEmployee.NIK);
-            if (response == null || !BC.Verify(loginEmployee.Password, response.Password))
+            if (response == null || !BC.Verify(loginEmployee.Password, response.PasswordUser))
             {
                 return null;
             }
